@@ -1087,6 +1087,8 @@
             }
         }
     </style>
+    <!-- Thư viện xuất file Excel chuyên nghiệp với Styling -->
+    <script src="exceljs.min.js"></script>
 </head>
 <body>
 
@@ -1243,10 +1245,13 @@
 
             <!-- Bảng Summary -->
             <div class="table-card">
-                <div class="table-header-area">
+                <div class="table-header-area" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                     <div class="table-title">
                         <i class="fa-solid fa-list-check"></i> Bảng Tổng Hợp Phân Cấp Miền & Vùng Bán Hàng
                     </div>
+                    <button class="page-btn" onclick="exportSummaryToExcel()" style="display: flex; align-items: center; gap: 6px; border-color: #22C55E; color: #16A34A; padding: 8px 14px; font-size: 12px; border-radius: 6px; cursor: pointer; background: white; font-weight: 600;">
+                        <i class="fa-solid fa-file-excel" style="color: #16A34A;"></i> Xuất Excel
+                    </button>
                 </div>
                 <div class="table-wrapper">
                     <table id="summary-table">
@@ -1276,29 +1281,34 @@
         <!-- ================= TAB: DETAIL REPORT ================= -->
         <div id="detail-report" class="tab-content">
             <div class="table-card">
-                <div class="filters-area">
-                    <div class="filter-group">
-                        <label>Miền</label>
-                        <select class="filter-control" id="filter-mien" onchange="applyFilters()">
-                            <option value="">Tất cả các Miền</option>
-                            <option value="Miền Bắc">Miền Bắc</option>
-                            <option value="Miền Nam">Miền Nam</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Vùng Bán Hàng</label>
-                        <select class="filter-control" id="filter-vung" onchange="applyFilters()">
-                            <option value="">Tất cả các Vùng</option>
-                            <!-- JS dynamically loads zones based on selection -->
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Tìm kiếm GSBH</label>
-                        <div class="search-wrapper">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="text" class="search-control" id="search-gs" placeholder="Tìm tên hoặc mã GSBH..." onkeyup="applyFilters()">
+                <div class="filters-area" style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%; flex-wrap: wrap; gap: 15px;">
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center; flex: 1;">
+                        <div class="filter-group">
+                            <label>Miền</label>
+                            <select class="filter-control" id="filter-mien" onchange="applyFilters()">
+                                <option value="">Tất cả các Miền</option>
+                                <option value="Miền Bắc">Miền Bắc</option>
+                                <option value="Miền Nam">Miền Nam</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Vùng Bán Hàng</label>
+                            <select class="filter-control" id="filter-vung" onchange="applyFilters()">
+                                <option value="">Tất cả các Vùng</option>
+                                <!-- JS dynamically loads zones based on selection -->
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Tìm kiếm GSBH</label>
+                            <div class="search-wrapper">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" class="search-control" id="search-gs" placeholder="Tìm tên hoặc mã GSBH..." onkeyup="applyFilters()">
+                            </div>
                         </div>
                     </div>
+                    <button class="page-btn" onclick="exportDetailToExcel()" style="display: flex; align-items: center; gap: 6px; border-color: #22C55E; color: #16A34A; padding: 10px 16px; font-size: 13px; border-radius: 6px; height: 38px; cursor: pointer; background: white; font-weight: 600; margin-bottom: 2px;">
+                        <i class="fa-solid fa-file-excel" style="color: #16A34A;"></i> Xuất Excel Chi Tiết
+                    </button>
                 </div>
                 <div id="detail-double-scroll" style="overflow-x: auto; overflow-y: hidden; border-bottom: 1px solid var(--gray-border); display: none;">
                     <div id="detail-double-scroll-content" style="height: 1px;"></div>
@@ -1348,18 +1358,23 @@
         <!-- ================= TAB: RAW DATA ================= -->
         <div id="raw-data" class="tab-content">
             <div class="table-card">
-                <div class="filters-area" style="display: flex; gap: 15px; flex-wrap: wrap;">
-                    <div class="filter-group" style="flex: 2; min-width: 250px;">
-                        <label>Tìm kiếm trong dữ liệu thô</label>
-                        <div class="search-wrapper">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="text" class="search-control" id="search-raw" placeholder="Nhập tên, mã, vùng, trạng thái..." onkeyup="filterRawData()" style="width: 100%;">
+                <div class="filters-area" style="display: flex; gap: 15px; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;">
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap; flex: 1;">
+                        <div class="filter-group" style="flex: 2; min-width: 250px;">
+                            <label>Tìm kiếm trong dữ liệu thô</label>
+                            <div class="search-wrapper">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" class="search-control" id="search-raw" placeholder="Nhập tên, mã, vùng, trạng thái..." onkeyup="filterRawData()" style="width: 100%;">
+                            </div>
+                        </div>
+                        <div class="filter-group" style="flex: 1; min-width: 180px;">
+                            <label>Lọc Ngày Thực Hiện</label>
+                            <input type="date" class="filter-control" id="filter-raw-date" onchange="filterRawData()" style="width: 100%; height: 38px; padding: 6px 12px; font-size: 13px;">
                         </div>
                     </div>
-                    <div class="filter-group" style="flex: 1; min-width: 180px;">
-                        <label>Lọc Ngày Thực Hiện</label>
-                        <input type="date" class="filter-control" id="filter-raw-date" onchange="filterRawData()" style="width: 100%; height: 38px; padding: 6px 12px; font-size: 13px;">
-                    </div>
+                    <button class="page-btn" onclick="exportRawToExcel()" style="display: flex; align-items: center; gap: 6px; border-color: #22C55E; color: #16A34A; padding: 10px 16px; font-size: 13px; border-radius: 6px; height: 38px; cursor: pointer; background: white; font-weight: 600;">
+                        <i class="fa-solid fa-file-excel" style="color: #16A34A;"></i> Xuất Excel Raw Data
+                    </button>
                 </div>
                 <div id="raw-double-scroll" style="overflow-x: auto; overflow-y: hidden; border-bottom: 1px solid var(--gray-border); display: none;">
                     <div id="raw-double-scroll-content" style="height: 1px;"></div>
@@ -2048,6 +2063,397 @@
             nextBtn.disabled = rawCurrentPage === totalPages;
             nextBtn.onclick = () => { rawCurrentPage++; renderRawTable(); };
             container.appendChild(nextBtn);
+        }
+
+        // --- Export Functions using ExcelJS with full Styling matching the web UI ---
+        async function exportSummaryToExcel() {
+            const monthVal = document.getElementById('month-select').value || 'Report';
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Summary');
+
+            const toNum = (val) => (val !== undefined && val !== null && val !== '' && !isNaN(val)) ? Number(val) : null;
+            const getWkPct = (val) => (val !== undefined && val !== null) ? (val * 100).toFixed(0) + '%' : '0%';
+
+            worksheet.columns = [
+                { header: 'Miền', key: 'mien', width: 15 },
+                { header: 'Vùng Bán Hàng', key: 'vung', width: 22 },
+                { header: 'Số GSBH', key: 'so_gsbh', width: 12, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'Tổng Đăng Ký', key: 'dang_ky', width: 15, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'Tổng Hoàn Thành', key: 'hoan_thanh', width: 15, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: '% Thực Hiện/Đăng Ký', key: 'pct_dang_ky', width: 22, style: { numFormat: '0.0%', alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: '% Thực Hiện/Target', key: 'pct_target', width: 22, style: { numFormat: '0.0%', alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'Tuần 1 Đạt KPI', key: 'tuan1_dat', width: 18, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'Tuần 2 Đạt KPI', key: 'tuan2_dat', width: 18, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'Tuần 3 Đạt KPI', key: 'tuan3_dat', width: 18, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'Tuần 4 Đạt KPI', key: 'tuan4_dat', width: 18, style: { alignment: { horizontal: 'center', vertical: 'middle' } } }
+            ];
+
+            // Header Style
+            const headerRow = worksheet.getRow(1);
+            headerRow.height = 28;
+            headerRow.eachCell((cell) => {
+                cell.font = { name: 'Arial', size: 10, bold: true, color: { argb: 'FF1E293B' } };
+                cell.fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: { argb: 'FFF1F5F9' }
+                };
+                cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+                cell.border = {
+                    bottom: { style: 'medium', color: { argb: 'FFCBD5E1' } },
+                    right: { style: 'thin', color: { argb: 'FFCBD5E1' } }
+                };
+            });
+
+            // Data Rows
+            currentSummaryData.forEach((r) => {
+                const row = worksheet.addRow({
+                    mien: r.mien,
+                    vung: r.vung,
+                    so_gsbh: toNum(r.so_gsbh),
+                    dang_ky: toNum(r.dang_ky),
+                    hoan_thanh: toNum(r.hoan_thanh),
+                    pct_dang_ky: toNum(r.pct_dang_ky),
+                    pct_target: toNum(r.pct_target),
+                    tuan1_dat: `${r.tuan1_dat} (${getWkPct(r.tuan1_pct)})`,
+                    tuan2_dat: `${r.tuan2_dat} (${getWkPct(r.tuan2_pct)})`,
+                    tuan3_dat: `${r.tuan3_dat} (${getWkPct(r.tuan3_pct)})`,
+                    tuan4_dat: `${r.tuan4_dat} (${getWkPct(r.tuan4_pct)})`
+                });
+
+                row.height = 22;
+
+                let isTotal = false;
+                let bgColor = null;
+                if (r.is_grand_total) {
+                    bgColor = 'FFFFE4E6'; // rose light
+                    isTotal = true;
+                } else if (r.is_mien_total) {
+                    bgColor = 'FFEFF6FF'; // blue light
+                    isTotal = true;
+                }
+
+                row.eachCell((cell, colNumber) => {
+                    cell.font = { name: 'Arial', size: 10, bold: isTotal, color: { argb: 'FF1E293B' } };
+                    
+                    if (bgColor) {
+                        cell.fill = {
+                            type: 'pattern',
+                            pattern: 'solid',
+                            fgColor: { argb: bgColor }
+                        };
+                    }
+
+                    if (colNumber <= 2) {
+                        cell.alignment = { vertical: 'middle', horizontal: 'left' };
+                    } else {
+                        cell.alignment = { vertical: 'middle', horizontal: 'center' };
+                    }
+
+                    if (colNumber === 7 && !isTotal) {
+                        const val = toNum(r.pct_target);
+                        if (val !== null) {
+                            let targetBg = 'FEE2E2';
+                            let targetText = '991B1B';
+                            if (val >= 1.0) {
+                                targetBg = 'DCFCE7';
+                                targetText = '166534';
+                            } else if (val >= 0.7) {
+                                targetBg = 'FEF9C3';
+                                targetText = '854D0E';
+                            }
+                            cell.fill = {
+                                type: 'pattern',
+                                pattern: 'solid',
+                                fgColor: { argb: 'FF' + targetBg }
+                            };
+                            cell.font = { name: 'Arial', size: 10, bold: true, color: { argb: 'FF' + targetText } };
+                        }
+                    }
+
+                    cell.border = {
+                        bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } },
+                        right: { style: 'thin', color: { argb: 'FFE2E8F0' } }
+                    };
+                });
+            });
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+            const url = window.URL.createObjectURL(blob);
+            const anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.download = `Bao_Cao_Coaching_Summary_${monthVal}.xlsx`;
+            anchor.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        async function exportDetailToExcel() {
+            const monthVal = document.getElementById('month-select').value || 'Report';
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Detail_Report');
+
+            const toNum = (val) => (val !== undefined && val !== null && val !== '' && !isNaN(val)) ? Number(val) : null;
+
+            worksheet.columns = [
+                { header: 'Miền', key: 'mien', width: 12 },
+                { header: 'Vùng Bán Hàng', key: 'vung', width: 16 },
+                { header: 'Mã GSBH', key: 'ma_gsbh', width: 12, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'Tên GSBH', key: 'ten_gsbh', width: 22 },
+                { header: 'Đăng Ký Tháng', key: 'dang_ky_thang', width: 15, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'Hoàn Thành Tháng', key: 'hoan_thanh_thang', width: 18, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: '% Đăng Ký', key: 'pct_dang_ky', width: 14, style: { numFormat: '0%', alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: '% Target', key: 'pct_target', width: 14, style: { numFormat: '0%', alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'T1 ĐK', key: 'tuan1_dang_ky', width: 10, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'T1 HT', key: 'tuan1_hoan_thanh', width: 10, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'T1 % Target', key: 'tuan1_pct_target', width: 14, style: { numFormat: '0%', alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'T1 KPI', key: 'tuan1_kpi', width: 12, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'T2 ĐK', key: 'tuan2_dang_ky', width: 10, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'T2 HT', key: 'tuan2_hoan_thanh', width: 10, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'T2 % Target', key: 'tuan2_pct_target', width: 14, style: { numFormat: '0%', alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'T2 KPI', key: 'tuan2_kpi', width: 12, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'T3 ĐK', key: 'tuan3_dang_ky', width: 10, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'T3 HT', key: 'tuan3_hoan_thanh', width: 10, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'T3 % Target', key: 'tuan3_pct_target', width: 14, style: { numFormat: '0%', alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'T3 KPI', key: 'tuan3_kpi', width: 12, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'T4 ĐK', key: 'tuan4_dang_ky', width: 10, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'T4 HT', key: 'tuan4_hoan_thanh', width: 10, style: { alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'T4 % Target', key: 'tuan4_pct_target', width: 14, style: { numFormat: '0%', alignment: { horizontal: 'center', vertical: 'middle' } } },
+                { header: 'T4 KPI', key: 'tuan4_kpi', width: 12, style: { alignment: { horizontal: 'center', vertical: 'middle' } } }
+            ];
+
+            // Header Style
+            const headerRow = worksheet.getRow(1);
+            headerRow.height = 28;
+            headerRow.eachCell((cell) => {
+                cell.font = { name: 'Arial', size: 9, bold: true, color: { argb: 'FF1E293B' } };
+                cell.fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: { argb: 'FFF1F5F9' }
+                };
+                cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+                cell.border = {
+                    bottom: { style: 'medium', color: { argb: 'FFCBD5E1' } },
+                    right: { style: 'thin', color: { argb: 'FFCBD5E1' } }
+                };
+            });
+
+            // Data Rows
+            filteredDetailData.forEach((r) => {
+                const row = worksheet.addRow({
+                    mien: r.mien,
+                    vung: r.vung,
+                    ma_gsbh: r.ma_gsbh,
+                    ten_gsbh: r.ten_gsbh,
+                    dang_ky_thang: toNum(r.dang_ky_thang),
+                    hoan_thanh_thang: toNum(r.hoan_thanh_thang),
+                    pct_dang_ky: toNum(r.pct_dang_ky),
+                    pct_target: toNum(r.pct_target),
+                    tuan1_dang_ky: toNum(r.tuan1_dang_ky),
+                    tuan1_hoan_thanh: toNum(r.tuan1_hoan_thanh),
+                    tuan1_pct_target: toNum(r.tuan1_pct_target),
+                    tuan1_kpi: r.tuan1_kpi,
+                    tuan2_dang_ky: toNum(r.tuan2_dang_ky),
+                    tuan2_hoan_thanh: toNum(r.tuan2_hoan_thanh),
+                    tuan2_pct_target: toNum(r.tuan2_pct_target),
+                    tuan2_kpi: r.tuan2_kpi,
+                    tuan3_dang_ky: toNum(r.tuan3_dang_ky),
+                    tuan3_hoan_thanh: toNum(r.tuan3_hoan_thanh),
+                    tuan3_pct_target: toNum(r.tuan3_pct_target),
+                    tuan3_kpi: r.tuan3_kpi,
+                    tuan4_dang_ky: toNum(r.tuan4_dang_ky),
+                    tuan4_hoan_thanh: toNum(r.tuan4_hoan_thanh),
+                    tuan4_pct_target: toNum(r.tuan4_pct_target),
+                    tuan4_kpi: r.tuan4_kpi
+                });
+
+                row.height = 20;
+
+                row.eachCell((cell, colNumber) => {
+                    cell.font = { name: 'Arial', size: 9, color: { argb: 'FF1E293B' } };
+                    
+                    cell.border = {
+                        bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } },
+                        right: { style: 'thin', color: { argb: 'FFE2E8F0' } }
+                    };
+
+                    if ([1, 2, 4].includes(colNumber)) {
+                        cell.alignment = { vertical: 'middle', horizontal: 'left' };
+                    } else {
+                        cell.alignment = { vertical: 'middle', horizontal: 'center' };
+                    }
+
+                    if (colNumber === 4) {
+                        cell.font = { name: 'Arial', size: 9, bold: true, color: { argb: 'FF1E293B' } };
+                    }
+
+                    if (colNumber === 8) {
+                        const val = toNum(r.pct_target);
+                        if (val !== null) {
+                            let targetBg = 'FEE2E2';
+                            let targetText = '991B1B';
+                            if (val >= 1.0) {
+                                targetBg = 'DCFCE7';
+                                targetText = '166534';
+                            } else if (val >= 0.7) {
+                                targetBg = 'FEF9C3';
+                                targetText = '854D0E';
+                            }
+                            cell.fill = {
+                                type: 'pattern',
+                                pattern: 'solid',
+                                fgColor: { argb: 'FF' + targetBg }
+                            };
+                            cell.font = { name: 'Arial', size: 9, bold: true, color: { argb: 'FF' + targetText } };
+                        }
+                    }
+
+                    if ([12, 16, 20, 24].includes(colNumber)) {
+                        const val = cell.value;
+                        if (val === 'Đạt') {
+                            cell.fill = {
+                                type: 'pattern',
+                                pattern: 'solid',
+                                fgColor: { argb: 'FFDCFCE7' }
+                            };
+                            cell.font = { name: 'Arial', size: 9, bold: true, color: { argb: 'FF15803D' } };
+                        } else if (val === 'Chưa Đạt' || val === 'Không Đạt' || val === 'Chưa đạt') {
+                            cell.fill = {
+                                type: 'pattern',
+                                pattern: 'solid',
+                                fgColor: { argb: 'FFFEE2E2' }
+                            };
+                            cell.font = { name: 'Arial', size: 9, bold: true, color: { argb: 'FFB91C1C' } };
+                        }
+                    }
+                });
+            });
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+            const url = window.URL.createObjectURL(blob);
+            const anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.download = `Bao_Cao_Coaching_Detail_${monthVal}.xlsx`;
+            anchor.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        async function exportRawToExcel() {
+            const monthVal = document.getElementById('month-select').value || 'Report';
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Filtered_Data');
+
+            worksheet.columns = [
+                { header: 'Miền', key: 'mien', width: 12 },
+                { header: 'Vùng Bán Hàng', key: 'vung', width: 16 },
+                { header: 'Mã GSBH', key: 'ma_gsbh', width: 12 },
+                { header: 'Tên GSBH', key: 'ten_gsbh', width: 22 },
+                { header: 'Mã NV Thực Hiện', key: 'ma_nv_thuc_hien', width: 16 },
+                { header: 'Tên NV Thực Hiện', key: 'ten_nv_thuc_hien', width: 22 },
+                { header: 'Từ Ngày (Ngày Thực Hiện)', key: 'tu_ngay', width: 22 },
+                { header: 'Loại Công Việc', key: 'loai_cong_viec', width: 18 },
+                { header: 'Trạng Thái', key: 'trang_thai', width: 15 },
+                { header: 'Phân Tuần', key: 'tuan', width: 14 }
+            ];
+
+            // Header Style
+            const headerRow = worksheet.getRow(1);
+            headerRow.height = 28;
+            headerRow.eachCell((cell) => {
+                cell.font = { name: 'Arial', size: 9, bold: true, color: { argb: 'FF1E293B' } };
+                cell.fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: { argb: 'FFF1F5F9' }
+                };
+                cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+                cell.border = {
+                    bottom: { style: 'medium', color: { argb: 'FFCBD5E1' } },
+                    right: { style: 'thin', color: { argb: 'FFCBD5E1' } }
+                };
+            });
+
+            // Data Rows
+            filteredRawData.forEach((r) => {
+                const row = worksheet.addRow({
+                    mien: r.mien,
+                    vung: r.vung,
+                    ma_gsbh: r.ma_gsbh,
+                    ten_gsbh: r.ten_gsbh,
+                    ma_nv_thuc_hien: r.ma_nv_thuc_hien || '',
+                    ten_nv_thuc_hien: r.ten_nv_thuc_hien || '',
+                    tu_ngay: r.tu_ngay,
+                    loai_cong_viec: r.loai_cong_viec,
+                    trang_thai: r.trang_thai,
+                    tuan: r.tuan
+                });
+
+                row.height = 20;
+
+                row.eachCell((cell, colNumber) => {
+                    cell.font = { name: 'Arial', size: 9, color: { argb: 'FF1E293B' } };
+                    
+                    cell.border = {
+                        bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } },
+                        right: { style: 'thin', color: { argb: 'FFE2E8F0' } }
+                    };
+
+                    if ([1, 2, 4, 6, 8].includes(colNumber)) {
+                        cell.alignment = { vertical: 'middle', horizontal: 'left' };
+                    } else {
+                        cell.alignment = { vertical: 'middle', horizontal: 'center' };
+                    }
+
+                    if (colNumber === 4 || colNumber === 6) {
+                        cell.font = { name: 'Arial', size: 9, bold: true, color: { argb: 'FF1E293B' } };
+                    }
+
+                    if (colNumber === 9) {
+                        const val = cell.value;
+                        if (val === 'Hoàn Thành' || val === 'Hoàn thành') {
+                            cell.fill = {
+                                type: 'pattern',
+                                pattern: 'solid',
+                                fgColor: { argb: 'FFDCFCE7' }
+                            };
+                            cell.font = { name: 'Arial', size: 9, bold: true, color: { argb: 'FF15803D' } };
+                        } else if (val === 'Đã Duyệt' || val === 'Đã duyệt') {
+                            cell.fill = {
+                                type: 'pattern',
+                                pattern: 'solid',
+                                fgColor: { argb: 'FFFEF9C3' }
+                            };
+                            cell.font = { name: 'Arial', size: 9, bold: true, color: { argb: 'FFD97706' } };
+                        } else {
+                            cell.fill = {
+                                type: 'pattern',
+                                pattern: 'solid',
+                                fgColor: { argb: 'FFFEE2E2' }
+                            };
+                            cell.font = { name: 'Arial', size: 9, bold: true, color: { argb: 'FFB91C1C' } };
+                        }
+                    }
+
+                    if (colNumber === 10) {
+                        cell.fill = {
+                            type: 'pattern',
+                            pattern: 'solid',
+                            fgColor: { argb: 'FFF1F5F9' }
+                        };
+                    }
+                });
+            });
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+            const url = window.URL.createObjectURL(blob);
+            const anchor = document.createElement('a');
+            anchor.href = url;
+            anchor.download = `Bao_Cao_Coaching_RawData_${monthVal}.xlsx`;
+            anchor.click();
+            window.URL.revokeObjectURL(url);
         }
     </script>
 </body>
