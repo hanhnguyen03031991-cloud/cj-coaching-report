@@ -674,6 +674,203 @@
         #detail-table tbody tr:hover td:nth-child(-n+4) {
             background-color: #F1F5F9 !important;
         }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            main {
+                padding: 0 10px;
+            }
+
+            .header-container {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 12px;
+                padding: 15px 12px;
+            }
+
+            .header-container > div {
+                align-items: flex-start !important;
+                width: 100% !important;
+            }
+
+            .logo-area {
+                width: 100%;
+                gap: 8px;
+            }
+
+            .logo-area img {
+                height: 40px !important;
+            }
+
+            .title-area h1 {
+                font-size: 16px;
+            }
+
+            .title-area p {
+                font-size: 10px;
+            }
+
+            .nav-tabs {
+                padding: 0 10px;
+                gap: 4px;
+                overflow-x: auto;
+                white-space: nowrap;
+                display: flex;
+                -webkit-overflow-scrolling: touch;
+                margin-top: 10px;
+            }
+
+            .tab-btn {
+                padding: 10px 12px;
+                font-size: 12px;
+                flex: 0 0 auto;
+            }
+
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+                margin-bottom: 15px;
+            }
+
+            .kpi-card {
+                padding: 12px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            .kpi-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+                order: -1;
+            }
+
+            .kpi-info h3 {
+                font-size: 11px;
+            }
+
+            .kpi-info .kpi-value {
+                font-size: 20px;
+                margin-top: 2px;
+            }
+
+            .charts-container {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                margin-bottom: 15px;
+            }
+
+            .donut-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .donut-item {
+                padding: 6px;
+            }
+
+            .donut-item h4 {
+                font-size: 11px;
+                margin-bottom: 4px;
+            }
+
+            .donut-chart-container {
+                height: 90px;
+            }
+
+            .filters-area {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 12px 15px;
+                gap: 10px;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+
+            .filter-control {
+                width: 100%;
+                min-width: unset;
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            .search-wrapper {
+                width: 100%;
+            }
+
+            .search-control {
+                width: 100%;
+                min-width: unset;
+                padding: 8px 12px 8px 35px;
+                font-size: 12px;
+            }
+
+            .search-wrapper i {
+                left: 12px;
+            }
+
+            .table-header-area {
+                padding: 12px 15px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .table-title {
+                font-size: 14px;
+            }
+
+            /* Responsive Table Font & Padding */
+            table th, table td {
+                padding: 8px 10px !important;
+                font-size: 11px !important;
+            }
+
+            /* Table Sticky Column adjustments for Mobile: Only Freeze Column 4 (Tên GSBH) */
+            #detail-table th:nth-child(1), #detail-table td:nth-child(1),
+            #detail-table th:nth-child(2), #detail-table td:nth-child(2),
+            #detail-table th:nth-child(3), #detail-table td:nth-child(3) {
+                position: static !important;
+                min-width: unset !important;
+                width: auto !important;
+                max-width: unset !important;
+                box-shadow: none !important;
+            }
+
+            #detail-table th:nth-child(4), #detail-table td:nth-child(4) {
+                position: sticky !important;
+                left: 0 !important;
+                min-width: 90px !important;
+                width: 90px !important;
+                max-width: 90px !important;
+                z-index: 10 !important;
+                box-shadow: inset -2px 0 0 var(--gray-border) !important;
+            }
+
+            #detail-table th:nth-child(4) {
+                background-color: var(--gray-light) !important;
+                z-index: 15 !important;
+            }
+
+            #detail-table tbody tr:nth-child(odd) td:nth-child(-n+3) {
+                background-color: transparent !important;
+            }
+            #detail-table tbody tr:nth-child(even) td:nth-child(-n+3) {
+                background-color: transparent !important;
+            }
+            #detail-table tbody tr:nth-child(odd) td:nth-child(4) {
+                background-color: white !important;
+            }
+            #detail-table tbody tr:nth-child(even) td:nth-child(4) {
+                background-color: #F8FAFC !important;
+            }
+            #detail-table tbody tr:hover td:nth-child(4) {
+                background-color: #F1F5F9 !important;
+            }
+        }
     </style>
 </head>
 <body>
