@@ -1811,15 +1811,25 @@
                             const { width, height } = chart;
                             const ctx = chart.ctx;
                             ctx.restore();
-                            ctx.font = "bold 14px Inter";
                             ctx.textBaseline = "middle";
+                            
+                            const pctText = totalGsbh > 0 ? ((numDat / totalGsbh) * 100).toFixed(0) + "%" : "0%";
+                            const labelText = totalGsbh > 0 ? `${numDat} Đạt - ${numNotDat} Rớt` : "0 Đạt - 0 Rớt";
+                            
+                            // Row 1: Percentage
+                            ctx.font = "bold 15px Inter";
                             ctx.fillStyle = "#1E293B";
+                            const pctX = Math.round((width - ctx.measureText(pctText).width) / 2);
+                            const pctY = Math.round(height / 2) - 6;
+                            ctx.fillText(pctText, pctX, pctY);
+
+                            // Row 2: GS Counts (Dat/Rot)
+                            ctx.font = "bold 9px Inter";
+                            ctx.fillStyle = "#64748B";
+                            const labelX = Math.round((width - ctx.measureText(labelText).width) / 2);
+                            const labelY = Math.round(height / 2) + 9;
+                            ctx.fillText(labelText, labelX, labelY);
                             
-                            const text = totalGsbh > 0 ? ((numDat / totalGsbh) * 100).toFixed(0) + "%" : "0%";
-                            const textX = Math.round((width - ctx.measureText(text).width) / 2);
-                            const textY = height / 2;
-                            
-                            ctx.fillText(text, textX, textY);
                             ctx.save();
                         }
                     }]
