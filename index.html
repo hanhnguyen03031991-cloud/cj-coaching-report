@@ -798,6 +798,10 @@
             background-color: white !important;
         }
 
+        .gs-meta {
+            display: none;
+        }
+
         #raw-table tbody tr:nth-child(even) td:nth-child(-n+4) {
             background-color: #F8FAFC !important;
         }
@@ -961,54 +965,52 @@
                 font-size: 11px !important;
             }
 
-            /* Table Sticky Column adjustments for Mobile: Freeze Column 1, 2, 3, 4 (Miền, Vùng, Mã, Tên) */
-            #detail-table th:nth-child(1), #detail-table td:nth-child(1) {
-                position: sticky !important;
-                left: 0px !important;
-                min-width: 55px !important;
-                width: 55px !important;
-                max-width: 55px !important;
-                z-index: 10 !important;
-            }
-            #detail-table th:nth-child(2), #detail-table td:nth-child(2) {
-                position: sticky !important;
-                left: 55px !important;
-                min-width: 65px !important;
-                width: 65px !important;
-                max-width: 65px !important;
-                z-index: 10 !important;
-            }
+            /* Table Sticky Column adjustments for Mobile: Freeze only Column 4 (Tên GSBH gộp) and Hide Column 1, 2, 3 */
+            #detail-table th:nth-child(1), #detail-table td:nth-child(1),
+            #detail-table th:nth-child(2), #detail-table td:nth-child(2),
             #detail-table th:nth-child(3), #detail-table td:nth-child(3) {
-                position: sticky !important;
-                left: 120px !important;
-                min-width: 55px !important;
-                width: 55px !important;
-                max-width: 55px !important;
-                z-index: 10 !important;
+                display: none !important;
             }
+
             #detail-table th:nth-child(4), #detail-table td:nth-child(4) {
                 position: sticky !important;
-                left: 175px !important;
-                min-width: 85px !important;
-                width: 85px !important;
-                max-width: 85px !important;
+                left: 0px !important;
+                min-width: 125px !important;
+                width: 125px !important;
+                max-width: 125px !important;
                 z-index: 10 !important;
                 box-shadow: inset -2px 0 0 var(--gray-border) !important;
             }
 
-            #detail-table th:nth-child(-n+4) {
+            #detail-table th:nth-child(4) {
                 background-color: var(--gray-light) !important;
                 z-index: 15 !important;
             }
 
-            #detail-table tbody tr:nth-child(odd) td:nth-child(-n+4) {
+            #detail-table tbody tr:nth-child(odd) td:nth-child(4) {
                 background-color: white !important;
             }
-            #detail-table tbody tr:nth-child(even) td:nth-child(-n+4) {
+            #detail-table tbody tr:nth-child(even) td:nth-child(4) {
                 background-color: #F8FAFC !important;
             }
-            #detail-table tbody tr:hover td:nth-child(-n+4) {
+            #detail-table tbody tr:hover td:nth-child(4) {
                 background-color: #F1F5F9 !important;
+            }
+
+            .gs-meta {
+                display: block !important;
+                font-size: 9px !important;
+                color: #64748B !important;
+                margin-top: 3px;
+                font-weight: 400;
+                white-space: normal !important;
+                line-height: 1.2;
+            }
+            .gs-name {
+                font-weight: 600;
+                font-size: 11px;
+                white-space: normal !important;
+                line-height: 1.3;
             }
 
             /* Summary Table Mobile Adjustments: Freeze Column 2 (Vùng) and Hide Column 1 to prevent overlap */
@@ -1060,53 +1062,35 @@
                 display: none !important;
             }
 
-            /* Raw Table Mobile Adjustments: Freeze Column 1, 2, 3, 4 (Miền, Vùng, Mã, Tên) */
-            #raw-table th:nth-child(1), #raw-table td:nth-child(1) {
-                position: sticky !important;
-                left: 0px !important;
-                min-width: 55px !important;
-                width: 55px !important;
-                max-width: 55px !important;
-                z-index: 10 !important;
-            }
-            #raw-table th:nth-child(2), #raw-table td:nth-child(2) {
-                position: sticky !important;
-                left: 55px !important;
-                min-width: 65px !important;
-                width: 65px !important;
-                max-width: 65px !important;
-                z-index: 10 !important;
-            }
+            /* Raw Table Mobile Adjustments: Freeze only Column 4 (Tên GSBH gộp) and Hide Column 1, 2, 3 */
+            #raw-table th:nth-child(1), #raw-table td:nth-child(1),
+            #raw-table th:nth-child(2), #raw-table td:nth-child(2),
             #raw-table th:nth-child(3), #raw-table td:nth-child(3) {
-                position: sticky !important;
-                left: 120px !important;
-                min-width: 55px !important;
-                width: 55px !important;
-                max-width: 55px !important;
-                z-index: 10 !important;
+                display: none !important;
             }
+
             #raw-table th:nth-child(4), #raw-table td:nth-child(4) {
                 position: sticky !important;
-                left: 175px !important;
-                min-width: 85px !important;
-                width: 85px !important;
-                max-width: 85px !important;
+                left: 0px !important;
+                min-width: 125px !important;
+                width: 125px !important;
+                max-width: 125px !important;
                 z-index: 10 !important;
                 box-shadow: inset -2px 0 0 var(--gray-border) !important;
             }
 
-            #raw-table th:nth-child(-n+4) {
+            #raw-table th:nth-child(4) {
                 background-color: var(--gray-light) !important;
                 z-index: 15 !important;
             }
 
-            #raw-table tbody tr:nth-child(odd) td:nth-child(-n+4) {
+            #raw-table tbody tr:nth-child(odd) td:nth-child(4) {
                 background-color: white !important;
             }
-            #raw-table tbody tr:nth-child(even) td:nth-child(-n+4) {
+            #raw-table tbody tr:nth-child(even) td:nth-child(4) {
                 background-color: #F8FAFC !important;
             }
-            #raw-table tbody tr:hover td:nth-child(-n+4) {
+            #raw-table tbody tr:hover td:nth-child(4) {
                 background-color: #F1F5F9 !important;
             }
         }
@@ -1910,7 +1894,10 @@
                     <td>${row.mien}</td>
                     <td>${row.vung}</td>
                     <td class="val-num">${row.ma_gsbh}</td>
-                    <td style="font-weight: 500;">${row.ten_gsbh}</td>
+                    <td class="col-gsbh-info">
+                        <div class="gs-name">${row.ten_gsbh}</div>
+                        <div class="gs-meta">${row.ma_gsbh} | ${row.mien} - ${row.vung}</div>
+                    </td>
                     <td class="text-center val-num">${row.dang_ky_thang}</td>
                     <td class="text-center val-num">${row.hoan_thanh_thang}</td>
                     <td class="text-center val-pct">${(row.pct_dang_ky * 100).toFixed(0)}%</td>
@@ -2026,7 +2013,10 @@
                     <td>${row.mien}</td>
                     <td>${row.vung}</td>
                     <td class="val-num">${row.ma_gsbh}</td>
-                    <td style="font-weight:500;">${row.ten_gsbh}</td>
+                    <td class="col-gsbh-info">
+                        <div class="gs-name">${row.ten_gsbh}</div>
+                        <div class="gs-meta">${row.ma_gsbh} | ${row.mien} - ${row.vung}</div>
+                    </td>
                     <td class="val-num">${row.ma_nv_thuc_hien || ''}</td>
                     <td>${row.ten_nv_thuc_hien || ''}</td>
                     <td class="val-num">${row.tu_ngay}</td>
