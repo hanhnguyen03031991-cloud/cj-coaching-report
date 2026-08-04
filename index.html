@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CJ Foods - Báo Cáo Coaching GSBH</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    <style>
+        :root {
+            --primary: #C52B27; /* CJ Red */
+            --primary-light: #FCEAEA;
+            --primary-dark: #A31E1B;
+            --dark: #2D2D2D;
+            --gray-light: #F5F6F8;
+            --gray-border: #E2E8F0;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --success: #22C55E;
+            --success-light: #DCFCE7;
+            --success-text: #15803D;
+            --danger: #EF4444;
+            --danger-light: #FEE2E2;
+            --danger-text: #B91C1C;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #F8FAFC;
+            color: var(--text-dark);
+            line-height: 1.5;
+            padding-bottom: 50px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            border-bottom: 3px solid var(--primary);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-cj {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 800;
+            font-size: 24px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 4px rgba(197, 43, 39, 0.3);
+        }
+
+        .title-area h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .title-area p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .meta-area {
+            text-align: right;
+            font-size: 13px;
+            color: var(--text-muted);
+            background-color: var(--gray-light);
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid var(--gray-border);
+        }
+
+        .meta-area strong {
+            color: var(--primary);
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            max-width: 1400px;
+            margin: 25px auto 0 auto;
+            padding: 0 30px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .tab-btn {
+            background-color: white;
+            border: 1px solid var(--gray-border);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .tab-btn:hover {
+            color: var(--primary);
+            border-color: var(--primary-light);
+            background-color: var(--primary-light);
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(197, 43, 39, 0.2);
+        }
+
+        /* Main Container */
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .tab-content {
+            display: none;
+            margin-top: 25px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* KPI Cards Grid */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .kpi-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 22px;
+            border: 1px solid var(--gray-border);
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+        }
+
+        .kpi-info h3 {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .kpi-info .kpi-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-top: 5px;
+        }
+
+        .kpi-icon {
+            font-size: 26px;
+            width: 54px;
+            height: 54px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .kpi-1 { background-color: #EEF2FF; color: #4F46E5; }
+        .kpi-2 { background-color: #ECFDF5; color: #10B981; }
+        .kpi-3 { background-color: #FFFBEB; color: #F59E0B; }
+        .kpi-4 { background-color: var(--primary-light); color: var(--primary); }
+
+        /* Dashboard Charts layout */
+        .charts-container {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 1024px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chart-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 22px;
+            border: 1px solid var(--gray-border);
+            box-shadow: var(--shadow);
+        }
+
+        .chart-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chart-card h3 i {
+            color: var(--primary);
+        }
+
+        .donut-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .donut-item {
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: var(--gray-light);
+            border: 1px dashed var(--gray-border);
+        }
+
+        .donut-item h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .donut-chart-container {
+            position: relative;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Table Card */
+        .table-card {
+            background-color: white;
+            border-radius: 12px;
+            border: 1px solid var(--gray-border);
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .table-header-area {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--gray-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+        }
+
+        .table-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .table-title i {
+            color: var(--primary);
+        }
+
+        /* Filter Controls */
+        .filters-area {
+            background-color: white;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--gray-border);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-group label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .filter-control {
+            padding: 10px 15px;
+            border-radius: 6px;
+            border: 1px solid var(--gray-border);
+            background-color: white;
+            font-size: 13px;
+            color: var(--text-dark);
+            min-width: 160px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .filter-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px var(--primary-light);
+        }
+
+        .search-control {
+            padding: 10px 15px 10px 40px;
+            border-radius: 6px;
+            border: 1px solid var(--gray-border);
+            background-color: white;
+            font-size: 13px;
+            color: var(--text-dark);
+            min-width: 250px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-wrapper {
+            position: relative;
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Data Tables styling */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: var(--gray-light);
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 14px 18px;
+            border-bottom: 2px solid var(--gray-border);
+            white-space: nowrap;
+            letter-spacing: 0.5px;
+            box-shadow: inset 0 -1px 0 var(--gray-border), 0 2px 2px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Sortable column header */
+        th.sortable {
+            cursor: pointer;
+            user-select: none;
+            transition: var(--transition);
+        }
+
+        th.sortable:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        th i {
+            margin-left: 5px;
+            font-size: 11px;
+        }
+
+        td {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--gray-border);
+            font-size: 13px;
+            color: var(--text-dark);
+            white-space: nowrap;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background-color: #F8FAFC;
+        }
+
+        /* Group Headings */
+        .group-header {
+            background-color: #F1F5F9;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .group-header td {
+            font-size: 14px;
+            padding: 15px 18px;
+        }
+
+        .sub-group-row td {
+            padding-left: 30px;
+        }
+
+        /* Row styles in Summary table */
+        .row-mien-total {
+            background-color: #E2E8F0;
+            font-weight: 700;
+        }
+        .row-mien-total td {
+            border-top: 1px solid #CBD5E1;
+            border-bottom: 2px solid #94A3B8;
+        }
+
+        .row-grand-total {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+        .row-grand-total td {
+            border-top: 2px solid var(--primary);
+            border-bottom: 3px double var(--primary);
+            font-size: 14px;
+            color: var(--primary-dark);
+        }
+
+        /* Alignment utilities */
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+
+        /* KPI Badge */
+        .kpi-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .kpi-badge.ok {
+            background-color: var(--success-light);
+            color: var(--success-text);
+        }
+
+        .kpi-badge.fail {
+            background-color: var(--danger-light);
+            color: var(--danger-text);
+        }
+
+        /* Numbers highlights */
+        .val-num {
+            font-weight: 500;
+        }
+
+        .val-pct {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        /* Target indicator */
+        .target-bar-bg {
+            background-color: #E2E8F0;
+            width: 70px;
+            height: 6px;
+            border-radius: 10px;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 8px;
+            overflow: hidden;
+        }
+
+        .target-bar-fill {
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        .target-bar-fill.high { background-color: var(--success); }
+        .target-bar-fill.med { background-color: #EAB308; }
+        .target-bar-fill.low { background-color: var(--danger); }
+
+        /* Row collapsible toggle */
+        .toggle-btn {
+            cursor: pointer;
+            margin-right: 8px;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .toggle-btn:hover {
+            transform: scale(1.2);
+        }
+
+        /* Pagination for raw data */
+        .pagination-area {
+            padding: 15px 24px;
+            border-top: 1px solid var(--gray-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .pagination-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .page-btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: 1px solid var(--gray-border);
+            background-color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .page-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Sticky columns for Detail Report Table */
+        #detail-table {
+            border-collapse: separate !important;
+            border-spacing: 0;
+        }
+
+        #detail-table th:nth-child(1),
+        #detail-table td:nth-child(1) {
+            position: sticky;
+            left: 0;
+            min-width: 90px;
+            width: 90px;
+            max-width: 90px;
+        }
+
+        #detail-table th:nth-child(2),
+        #detail-table td:nth-child(2) {
+            position: sticky;
+            left: 90px;
+            min-width: 100px;
+            width: 100px;
+            max-width: 100px;
+        }
+
+        #detail-table th:nth-child(3),
+        #detail-table td:nth-child(3) {
+            position: sticky;
+            left: 190px;
+            min-width: 100px;
+            width: 100px;
+            max-width: 100px;
+        }
+
+        #detail-table th:nth-child(4),
+        #detail-table td:nth-child(4) {
+            position: sticky;
+            left: 290px;
+            min-width: 170px;
+            width: 170px;
+            max-width: 170px;
+        }
+
+        #detail-table th:nth-child(-n+4) {
+            z-index: 15 !important;
+            background-color: var(--gray-light) !important;
+            box-shadow: inset 0 -2px 0 var(--gray-border), inset -1px 0 0 var(--gray-border) !important;
+        }
+
+        #detail-table th:nth-child(4) {
+            box-shadow: inset 0 -2px 0 var(--gray-border), inset -2px 0 0 var(--gray-border) !important;
+        }
+
+        #detail-table td:nth-child(-n+4) {
+            z-index: 5 !important;
+            box-shadow: inset 0 -1px 0 var(--gray-border), inset -1px 0 0 var(--gray-border) !important;
+        }
+
+        #detail-table td:nth-child(4) {
+            box-shadow: inset 0 -1px 0 var(--gray-border), inset -2px 0 0 var(--gray-border) !important;
+        }
+
+        /* Zebra striping for sticky columns */
+        #detail-table tbody tr:nth-child(odd) td:nth-child(-n+4) {
+            background-color: white !important;
+        }
+
+        #detail-table tbody tr:nth-child(even) td:nth-child(-n+4) {
+            background-color: #F8FAFC !important;
+        }
+
+        /* Hover effect for sticky columns */
+        #detail-table tbody tr:hover td:nth-child(-n+4) {
+            background-color: #F1F5F9 !important;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo-area">
+                <img src="logo_cj.png" alt="CJ Foods Logo" style="height: 50px; width: auto; object-fit: contain;">
+                <div class="title-area">
+                    <h1>Báo Cáo Coaching Giám Sát Bán Hàng</h1>
+                    <p>CJ Foods Việt Nam - Hệ Thống Theo Dõi Vận Hành RTM</p>
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+                <div class="meta-area" id="last-updated-badge" style="margin: 0; padding: 6px 12px; font-size: 11px;">
+                    Cập nhật lần cuối: <strong id="update-time">Đang tải...</strong>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <label style="font-size: 12px; font-weight: 600; color: var(--text-muted); white-space: nowrap;">Chọn Tháng:</label>
+                    <select id="month-select" class="filter-control" style="min-width: 130px; padding: 4px 10px; font-size: 12px; height: auto;" onchange="changeReportMonth(this.value)">
+                        <!-- JS dynamic options -->
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('dashboard')">
+            <i class="fa-solid fa-chart-line"></i> Dashboard Tổng Quan
+        </button>
+        <button class="tab-btn" onclick="switchTab('detail-report')">
+            <i class="fa-solid fa-users"></i> Báo Cáo Chi Tiết GSBH
+        </button>
+        <button class="tab-btn" onclick="switchTab('raw-data')">
+            <i class="fa-solid fa-database"></i> Dữ Liệu Thô Đã Lọc
+        </button>
+    </div>
+
+    <main>
+        <!-- ================= TAB: DASHBOARD ================= -->
+        <div id="dashboard" class="tab-content active">
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-info">
+                        <h3>Tổng Số GSBH</h3>
+                        <div class="kpi-value" id="kpi-total-gs">--</div>
+                    </div>
+                    <div class="kpi-icon kpi-1">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-info">
+                        <h3>Đăng Ký Coaching</h3>
+                        <div class="kpi-value" id="kpi-total-reg">--</div>
+                    </div>
+                    <div class="kpi-icon kpi-2">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-info">
+                        <h3>Đã Hoàn Thành</h3>
+                        <div class="kpi-value" id="kpi-total-comp">--</div>
+                    </div>
+                    <div class="kpi-icon kpi-3">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-info">
+                        <h3>Tỷ Lệ Hoàn Thành</h3>
+                        <div class="kpi-value" id="kpi-completion-rate">--%</div>
+                    </div>
+                    <div class="kpi-icon kpi-4">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-info">
+                        <h3>Chỉ Tiêu (Target) Tháng</h3>
+                        <div class="kpi-value" id="kpi-total-target">--</div>
+                    </div>
+                    <div class="kpi-icon kpi-1" style="background-color: #F5F3FF; color: #7C3AED;">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-info">
+                        <h3>Tỷ Lệ Thực Hiện/Target</h3>
+                        <div class="kpi-value" id="kpi-target-completion-rate">--%</div>
+                    </div>
+                    <div class="kpi-icon kpi-2" style="background-color: #ECFDF5; color: #059669;">
+                        <i class="fa-solid fa-gauge-high"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-container">
+                <!-- Bar Chart: Completion vs Target % by Zone -->
+                <div class="chart-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+                        <h3 id="bar-chart-title" style="margin-bottom: 0;"><i class="fa-solid fa-chart-column"></i> Tỷ Lệ Thực Hiện / Target Theo Vùng (%)</h3>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <label style="font-size: 12px; font-weight: 600; color: var(--text-muted); white-space: nowrap;">Lọc Dashboard:</label>
+                            <select id="dashboard-zone-select" class="filter-control" style="min-width: 140px; padding: 6px 12px; font-size: 12px; height: auto;" onchange="selectDashboardZone(this.value)">
+                                <option value="Tất cả">Toàn Quốc (Tất cả)</option>
+                                <option value="Hà Nội">Hà Nội</option>
+                                <option value="Hải Phòng">Hải Phòng</option>
+                                <option value="Đà Nẵng">Đà Nẵng</option>
+                                <option value="Nha Trang">Nha Trang</option>
+                                <option value="HCM">HCM</option>
+                                <option value="Cần Thơ">Cần Thơ</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="position: relative; height: 300px;">
+                        <canvas id="bar-chart-vung"></canvas>
+                    </div>
+                </div>
+                <!-- 4 Donut Charts: KPI Achievement % per Week -->
+                <div class="chart-card">
+                    <h3><i class="fa-solid fa-percent"></i> Tỷ Lệ GSBH Đạt KPI Tuần (>=4 ngày)</h3>
+                    <div class="donut-grid">
+                        <div class="donut-item">
+                            <h4>Tuần 1</h4>
+                            <div class="donut-chart-container">
+                                <canvas id="donut-tuan1"></canvas>
+                            </div>
+                        </div>
+                        <div class="donut-item">
+                            <h4>Tuần 2</h4>
+                            <div class="donut-chart-container">
+                                <canvas id="donut-tuan2"></canvas>
+                            </div>
+                        </div>
+                        <div class="donut-item">
+                            <h4>Tuần 3</h4>
+                            <div class="donut-chart-container">
+                                <canvas id="donut-tuan3"></canvas>
+                            </div>
+                        </div>
+                        <div class="donut-item">
+                            <h4>Tuần 4</h4>
+                            <div class="donut-chart-container">
+                                <canvas id="donut-tuan4"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bảng Summary -->
+            <div class="table-card">
+                <div class="table-header-area">
+                    <div class="table-title">
+                        <i class="fa-solid fa-list-check"></i> Bảng Tổng Hợp Phân Cấp Miền & Vùng Bán Hàng
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 140px;">Miền</th>
+                                <th style="width: 220px;">Vùng</th>
+                                <th class="text-center" style="width: 100px;">Số GSBH</th>
+                                <th class="text-center" style="width: 130px;">Tổng Đăng Ký</th>
+                                <th class="text-center" style="width: 130px;">Tổng Hoàn Thành</th>
+                                <th class="text-center" style="width: 150px;">% Thực Hiện/Đăng Ký</th>
+                                <th id="summary-target-header" class="text-center" style="width: 150px;">% Thực Hiện/Target (-- ngày)</th>
+                                <th class="text-center" style="width: 130px;">Tuần 1 Đạt KPI</th>
+                                <th class="text-center" style="width: 130px;">Tuần 2 Đạt KPI</th>
+                                <th class="text-center" style="width: 130px;">Tuần 3 Đạt KPI</th>
+                                <th class="text-center" style="width: 130px;">Tuần 4 Đạt KPI</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summary-table-body">
+                            <!-- JS dynamic render summary data -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB: DETAIL REPORT ================= -->
+        <div id="detail-report" class="tab-content">
+            <div class="table-card">
+                <div class="filters-area">
+                    <div class="filter-group">
+                        <label>Miền</label>
+                        <select class="filter-control" id="filter-mien" onchange="applyFilters()">
+                            <option value="">Tất cả các Miền</option>
+                            <option value="Miền Bắc">Miền Bắc</option>
+                            <option value="Miền Nam">Miền Nam</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Vùng Bán Hàng</label>
+                        <select class="filter-control" id="filter-vung" onchange="applyFilters()">
+                            <option value="">Tất cả các Vùng</option>
+                            <!-- JS dynamically loads zones based on selection -->
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Tìm kiếm GSBH</label>
+                        <div class="search-wrapper">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" class="search-control" id="search-gs" placeholder="Tìm tên hoặc mã GSBH..." onkeyup="applyFilters()">
+                        </div>
+                    </div>
+                </div>
+                <div id="detail-double-scroll" style="overflow-x: auto; overflow-y: hidden; border-bottom: 1px solid var(--gray-border); display: none;">
+                    <div id="detail-double-scroll-content" style="height: 1px;"></div>
+                </div>
+                <div class="table-wrapper" id="detail-table-wrapper" style="max-height: 600px; overflow-y: auto;">
+                    <table id="detail-table">
+                        <thead>
+                            <tr>
+                                <th class="sortable" onclick="sortTable('mien')">Miền <i class="fa-solid fa-sort"></i></th>
+                                <th class="sortable" onclick="sortTable('vung')">Vùng <i class="fa-solid fa-sort"></i></th>
+                                <th class="sortable" onclick="sortTable('ma_gsbh')">Mã GSBH <i class="fa-solid fa-sort"></i></th>
+                                <th class="sortable" onclick="sortTable('ten_gsbh')">Tên GSBH <i class="fa-solid fa-sort"></i></th>
+                                <th class="sortable text-center" onclick="sortTable('dang_ky_thang')">Đăng Ký Tháng <i class="fa-solid fa-sort"></i></th>
+                                <th class="sortable text-center" onclick="sortTable('hoan_thanh_thang')">Hoàn Thành Tháng <i class="fa-solid fa-sort"></i></th>
+                                <th class="sortable text-center" onclick="sortTable('pct_dang_ky')">% Đăng Ký <i class="fa-solid fa-sort"></i></th>
+                                <th id="detail-target-header" class="sortable text-center" onclick="sortTable('pct_target')">% Target <i class="fa-solid fa-sort"></i></th>
+                                <!-- Week 1 -->
+                                <th class="text-center" style="border-left: 2px solid var(--gray-border);">T1 ĐK</th>
+                                <th class="text-center">T1 HT</th>
+                                <th class="text-center">T1 % Target</th>
+                                <th class="text-center" style="border-right: 2px solid var(--gray-border);">T1 KPI</th>
+                                <!-- Week 2 -->
+                                <th class="text-center">T2 ĐK</th>
+                                <th class="text-center">T2 HT</th>
+                                <th class="text-center">T2 % Target</th>
+                                <th class="text-center" style="border-right: 2px solid var(--gray-border);">T2 KPI</th>
+                                <!-- Week 3 -->
+                                <th class="text-center">T3 ĐK</th>
+                                <th class="text-center">T3 HT</th>
+                                <th class="text-center">T3 % Target</th>
+                                <th class="text-center" style="border-right: 2px solid var(--gray-border);">T3 KPI</th>
+                                <!-- Week 4 -->
+                                <th class="text-center">T4 ĐK</th>
+                                <th class="text-center">T4 HT</th>
+                                <th class="text-center">T4 % Target</th>
+                                <th class="text-center">T4 KPI</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detail-table-body">
+                            <!-- JS dynamic render detail data -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB: RAW DATA ================= -->
+        <div id="raw-data" class="tab-content">
+            <div class="table-card">
+                <div class="filters-area">
+                    <div class="filter-group" style="flex: 1;">
+                        <label>Tìm kiếm trong dữ liệu thô</label>
+                        <div class="search-wrapper">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" class="search-control" id="search-raw" placeholder="Nhập tên, mã, vùng, trạng thái..." onkeyup="filterRawData()" style="width: 100%;">
+                        </div>
+                    </div>
+                </div>
+                <div id="raw-double-scroll" style="overflow-x: auto; overflow-y: hidden; border-bottom: 1px solid var(--gray-border); display: none;">
+                    <div id="raw-double-scroll-content" style="height: 1px;"></div>
+                </div>
+                <div class="table-wrapper" id="raw-table-wrapper">
+                    <table id="raw-table">
+                        <thead>
+                            <tr>
+                                <th>Miền</th>
+                                <th>Vùng Bán Hàng</th>
+                                <th>Mã GSBH</th>
+                                <th>Tên GSBH</th>
+                                <th>Từ Ngày (Ngày Thực Hiện)</th>
+                                <th>Loại Công Việc</th>
+                                <th>Trạng Thái</th>
+                                <th>Phân Tuần</th>
+                            </tr>
+                        </thead>
+                        <tbody id="raw-table-body">
+                            <!-- JS render raw data -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination-area">
+                    <div id="pagination-info">Hiển thị 1-10 trong tổng số -- dòng</div>
+                    <div class="pagination-btns" id="pagination-btns-container">
+                        <!-- JS paginator -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Load Local JS Data -->
+    <script src="coaching_data.js"></script>
+    <script>
+        // Global variables
+        let activeTab = 'dashboard';
+        let detailData = [];
+        let filteredDetailData = [];
+        let rawData = [];
+        let filteredRawData = [];
+        let currentSortCol = 'mien';
+        let currentSortOrder = 'asc';
+        let selectedDashboardZone = 'Tất cả'; // Active zone filter for Dashboard
+        let currentTargetDays = 16; // Dynamic target
+        let currentSummaryData = []; // Dynamic summary data per month
+        let currentChartZonesData = []; // To avoid JS closure bug in chart update callbacks
+        
+        // Raw Data Pagination variables
+        let rawPageSize = 15;
+        let rawCurrentPage = 1;
+
+        // Dom Ready
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof coachingData !== 'undefined') {
+                // Last updated badge
+                document.getElementById('update-time').innerText = coachingData.lastUpdated;
+
+                // Detect available months
+                const monthsDict = coachingData.months || {};
+                const monthKeys = Object.keys(monthsDict).sort().reverse();
+                
+                if (monthKeys.length === 0) {
+                    alert("Không tìm thấy dữ liệu tháng nào!");
+                    return;
+                }
+
+                // Fill month select option
+                const monthSelect = document.getElementById('month-select');
+                monthSelect.innerHTML = '';
+                monthKeys.forEach(m => {
+                    const parts = m.split('-');
+                    const label = `Tháng ${parts[1]}/${parts[0]}`;
+                    const opt = document.createElement('option');
+                    opt.value = m;
+                    opt.innerText = label;
+                    monthSelect.appendChild(opt);
+                });
+
+                // Load initial month data
+                loadMonthData(monthKeys[0]);
+            } else {
+                alert("Không tìm thấy file coaching_data.js. Hãy chạy script Python để sinh dữ liệu trước!");
+            }
+        });
+
+        // Load Month Data
+        function loadMonthData(monthKey) {
+            const monthObj = coachingData.months[monthKey];
+            if (!monthObj) return;
+
+            currentTargetDays = monthObj.currentTargetDays || 16;
+            detailData = monthObj.detail || [];
+            filteredDetailData = [...detailData];
+            
+            // Filter raw data for selected month
+            rawData = (coachingData.rawData || []).filter(r => r.tu_ngay && r.tu_ngay.substring(0, 7) === monthKey);
+            filteredRawData = [...rawData];
+
+            // Load filters list
+            loadFilterOptions();
+
+            // Update dynamic target headers based on data
+            document.getElementById('summary-target-header').innerText = '% Thực Hiện/Target (' + currentTargetDays + ' ngày)';
+            document.getElementById('detail-target-header').innerHTML = '% Target (' + currentTargetDays + ' ngày) <i class="fa-solid fa-sort"></i>';
+            document.getElementById('bar-chart-title').innerHTML = '<i class="fa-solid fa-chart-column"></i> Tỷ Lệ Thực Hiện / Target Theo Vùng (Lũy kế ' + currentTargetDays + ' ngày) (%)';
+
+            // Compute & Render everything
+            renderKPIs(detailData);
+            renderSummaryTable(monthObj.summary);
+            renderCharts(detailData);
+            renderDetailTable();
+            
+            rawCurrentPage = 1;
+            renderRawTable();
+
+            // Setup double scrolls
+            setTimeout(() => {
+                setupDoubleScroll('detail-double-scroll', 'detail-double-scroll-content', 'detail-table-wrapper', 'detail-table');
+                setupDoubleScroll('raw-double-scroll', 'raw-double-scroll-content', 'raw-table-wrapper', 'raw-table');
+            }, 50);
+        }
+
+        // Change Month Selector
+        function changeReportMonth(monthKey) {
+            loadMonthData(monthKey);
+        }
+
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Set active button
+            event.currentTarget.classList.add('active');
+            
+            // Set active content
+            document.getElementById(tabId).classList.add('active');
+            activeTab = tabId;
+
+            // Re-trigger scrollbar width updates when tab content becomes visible
+            setTimeout(() => {
+                window.dispatchEvent(new Event('resize'));
+            }, 100);
+        }
+
+        // Helper to setup synchronized top & bottom horizontal scrollbars
+        function setupDoubleScroll(wrapperId, contentId, targetWrapperId, tableId) {
+            const wrapper = document.getElementById(wrapperId);
+            const content = document.getElementById(contentId);
+            const targetWrapper = document.getElementById(targetWrapperId);
+            const table = document.getElementById(tableId);
+
+            if (!wrapper || !content || !targetWrapper || !table) return;
+
+            const updateWidth = () => {
+                const tableWidth = table.offsetWidth;
+                content.style.width = tableWidth + 'px';
+                
+                // Show/hide top dummy scrollbar based on whether overflow is present
+                if (tableWidth > targetWrapper.offsetWidth) {
+                    wrapper.style.display = 'block';
+                } else {
+                    wrapper.style.display = 'none';
+                }
+            };
+
+            // Run immediately and bind window events
+            updateWidth();
+            window.addEventListener('resize', updateWidth);
+            
+            // Observe table updates to auto recalculate scrollbar widths
+            const observer = new MutationObserver(updateWidth);
+            observer.observe(table, { childList: true, subtree: true });
+
+            // Bi-directional Scroll Synchronization
+            let isSyncingWrapperScroll = false;
+            let isSyncingTargetScroll = false;
+
+            wrapper.onscroll = function() {
+                if (!isSyncingWrapperScroll) {
+                    isSyncingTargetScroll = true;
+                    targetWrapper.scrollLeft = wrapper.scrollLeft;
+                }
+                isSyncingWrapperScroll = false;
+            };
+
+            targetWrapper.onscroll = function() {
+                if (!isSyncingTargetScroll) {
+                    isSyncingWrapperScroll = true;
+                    wrapper.scrollLeft = targetWrapper.scrollLeft;
+                }
+                isSyncingTargetScroll = false;
+            };
+        }
+
+        // 1. Render Dashboard KPIs
+        function renderKPIs(subset = detailData) {
+            const numGsbh = subset.length;
+            document.getElementById('kpi-total-gs').innerText = numGsbh;
+
+            let totalReg = 0;
+            let totalComp = 0;
+            subset.forEach(gs => {
+                totalReg += gs.dang_ky_thang;
+                totalComp += gs.hoan_thanh_thang;
+            });
+
+            document.getElementById('kpi-total-reg').innerText = totalReg;
+            document.getElementById('kpi-total-comp').innerText = totalComp;
+
+            const completionRate = totalReg > 0 ? (totalComp / totalReg * 100).toFixed(1) : 0;
+            document.getElementById('kpi-completion-rate').innerText = completionRate + "%";
+
+            // Total Target = GSBH Count * currentTargetDays
+            const currentTargetDays = coachingData.currentTargetDays || 16;
+            const totalTarget = numGsbh * currentTargetDays;
+            document.getElementById('kpi-total-target').innerText = totalTarget + " ngày";
+
+            // Target completion rate
+            const targetCompletionRate = totalTarget > 0 ? (totalComp / totalTarget * 100).toFixed(1) : 0;
+            document.getElementById('kpi-target-completion-rate').innerText = targetCompletionRate + "%";
+        }
+
+        // 2. Render Summary Table (Hierarchy)
+        function renderSummaryTable(summaryData) {
+            const tbody = document.getElementById('summary-table-body');
+            tbody.innerHTML = '';
+            
+            if (!summaryData) return;
+            currentSummaryData = summaryData;
+            
+            summaryData.forEach(row => {
+                const tr = document.createElement('tr');
+                
+                // Add specific styling classes for totals
+                if (row.is_grand_total) {
+                    tr.className = 'row-grand-total';
+                } else if (row.is_mien_total) {
+                    tr.className = 'row-mien-total';
+                }
+                
+                // Construct HTML row
+                tr.innerHTML = `
+                    <td>${row.mien}</td>
+                    <td>${row.vung}</td>
+                    <td class="text-center val-num">${row.so_gsbh}</td>
+                    <td class="text-center val-num">${row.dang_ky}</td>
+                    <td class="text-center val-num">${row.hoan_thanh}</td>
+                    <td class="text-center val-pct">${(row.pct_dang_ky * 100).toFixed(1)}%</td>
+                    <td class="text-center">
+                        <div class="target-bar-bg">
+                            <div class="target-bar-fill ${row.pct_target >= 1.0 ? 'high' : (row.pct_target >= 0.7 ? 'med' : 'low')}" style="width: ${Math.min(row.pct_target * 100, 100)}%;"></div>
+                        </div>
+                        <span class="val-pct">${(row.pct_target * 100).toFixed(1)}%</span>
+                    </td>
+                    <td class="text-center val-num">${row.tuan1_dat} <span style="font-size:11px;color:var(--text-muted);">(${(row.tuan1_pct*100).toFixed(0)}%)</span></td>
+                    <td class="text-center val-num">${row.tuan2_dat} <span style="font-size:11px;color:var(--text-muted);">(${(row.tuan2_pct*100).toFixed(0)}%)</span></td>
+                    <td class="text-center val-num">${row.tuan3_dat} <span style="font-size:11px;color:var(--text-muted);">(${(row.tuan3_pct*100).toFixed(0)}%)</span></td>
+                    <td class="text-center val-num">${row.tuan4_dat} <span style="font-size:11px;color:var(--text-muted);">(${(row.tuan4_pct*100).toFixed(0)}%)</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 3. Render Dashboard Charts
+        let barChartInstance = null;
+        let donutCharts = [];
+        
+        function renderCharts(subset = detailData) {
+            // --- Bar Chart (Zones) ---
+            const zonesData = currentSummaryData.filter(r => !r.is_mien_total && !r.is_grand_total);
+            currentChartZonesData = zonesData; // Sync global variable
+            const barLabels = zonesData.map(r => r.vung);
+            
+            // Map values: Completion vs Target percentage (Target = GSBH Count * 16)
+            const barTargetPctData = zonesData.map(r => (r.pct_target * 100).toFixed(1));
+            
+            // Color mapping: Highlight active selected zone
+            const backgroundColors = barLabels.map(z => {
+                if (selectedDashboardZone === 'Tất cả') return '#C52B27'; // All red
+                return z === selectedDashboardZone ? '#C52B27' : '#CBD5E1'; // Active red, inactive gray
+            });
+
+            if (barChartInstance) {
+                // Update bar chart data instead of recreating to prevent flickers
+                barChartInstance.data.datasets[0].data = barTargetPctData;
+                barChartInstance.data.datasets[0].backgroundColor = backgroundColors;
+                barChartInstance.update();
+            } else {
+                const barCtx = document.getElementById('bar-chart-vung').getContext('2d');
+                barChartInstance = new Chart(barCtx, {
+                    type: 'bar',
+                    plugins: [ChartDataLabels], // Register datalabels plugin locally
+                    data: {
+                        labels: barLabels,
+                        datasets: [{
+                            label: 'Tỷ lệ Hoàn thành/Target (%)',
+                            data: barTargetPctData,
+                            backgroundColor: backgroundColors,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        onClick: (event, elements) => {
+                            if (elements.length > 0) {
+                                const index = elements[0].index;
+                                const clickedZone = barLabels[index];
+                                // Toggle zone filter: if clicked already selected, clear filter
+                                if (selectedDashboardZone === clickedZone) {
+                                    selectDashboardZone('Tất cả');
+                                } else {
+                                    selectDashboardZone(clickedZone);
+                                }
+                            }
+                        },
+                        onHover: (event, chartElement) => {
+                            event.native.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 130, // Give some headroom above 100% for top labels
+                                grid: { color: '#E2E8F0' },
+                                ticks: {
+                                    callback: function(value) { return value + "%"; }
+                                }
+                            },
+                            x: { grid: { display: false } }
+                        },
+                        plugins: {
+                            legend: { display: false }, // Hide legend as there's only one dataset
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const zoneName = context.label;
+                                        const pct = context.raw;
+                                        const zoneRow = currentChartZonesData.find(r => r.vung === zoneName);
+                                        return ` Đạt Target: ${pct}% (${zoneRow.hoan_thanh}/${zoneRow.so_gsbh * currentTargetDays} ngày)`;
+                                    }
+                                }
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'top',
+                                formatter: (value, context) => {
+                                    const zoneName = context.chart.data.labels[context.dataIndex];
+                                    const zoneRow = currentChartZonesData.find(r => r.vung === zoneName);
+                                    if (zoneRow) {
+                                        const target = zoneRow.so_gsbh * currentTargetDays;
+                                        return `${value}%\n(${zoneRow.hoan_thanh}/${target})`;
+                                    }
+                                    return value + '%';
+                                },
+                                font: {
+                                    weight: 'bold',
+                                    family: 'Inter',
+                                    size: 9
+                                },
+                                color: '#475569',
+                                textAlign: 'center'
+                            }
+                        }
+                    }
+                });
+            }
+
+            // --- Donut Charts (Weeks KPI for selected subset) ---
+            // Clear previous donut instances
+            donutCharts.forEach(c => c.destroy());
+            donutCharts = [];
+
+            const totalGsbh = subset.length;
+            
+            // Count GSBH meeting KPI for each week in the selected subset
+            const getDatKpiCount = (wkKey) => {
+                return subset.filter(gs => gs[wkKey + "_kpi"] === 'Đạt').length;
+            };
+
+            const t1Dat = getDatKpiCount('tuan1');
+            const t2Dat = getDatKpiCount('tuan2');
+            const t3Dat = getDatKpiCount('tuan3');
+            const t4Dat = getDatKpiCount('tuan4');
+
+            const makeDonut = (canvasId, numDat) => {
+                const numNotDat = totalGsbh - numDat;
+                const ctx = document.getElementById(canvasId).getContext('2d');
+                
+                const chart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                            data: totalGsbh > 0 ? [numDat, numNotDat] : [0, 1], // fallback for empty subset
+                            backgroundColor: totalGsbh > 0 ? ['#22C55E', '#F8D7DA'] : ['#E2E8F0', '#E2E8F0'],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '70%',
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                enabled: totalGsbh > 0,
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.dataIndex === 0 ? 'Đạt KPI' : 'Không đạt';
+                                        const val = context.raw;
+                                        const pct = (val / totalGsbh * 100).toFixed(0);
+                                        return ` ${label}: ${val} GS (${pct}%)`;
+                                    }
+                                }
+                            },
+                            datalabels: { display: false } // Disable datalabels for donut chart to avoid text clutter
+                        }
+                    },
+                    plugins: [{
+                        id: 'centerText',
+                        beforeDraw(chart) {
+                            const { width, height } = chart;
+                            const ctx = chart.ctx;
+                            ctx.restore();
+                            ctx.font = "bold 14px Inter";
+                            ctx.textBaseline = "middle";
+                            ctx.fillStyle = "#1E293B";
+                            
+                            const text = totalGsbh > 0 ? ((numDat / totalGsbh) * 100).toFixed(0) + "%" : "0%";
+                            const textX = Math.round((width - ctx.measureText(text).width) / 2);
+                            const textY = height / 2;
+                            
+                            ctx.fillText(text, textX, textY);
+                            ctx.save();
+                        }
+                    }]
+                });
+                donutCharts.push(chart);
+            };
+
+            makeDonut('donut-tuan1', t1Dat);
+            makeDonut('donut-tuan2', t2Dat);
+            makeDonut('donut-tuan3', t3Dat);
+            makeDonut('donut-tuan4', t4Dat);
+        }
+
+        // Zone selector callback from Bar Chart or Dropdown
+        function selectDashboardZone(zoneName) {
+            selectedDashboardZone = zoneName;
+            
+            // Sync dropdown selection
+            document.getElementById('dashboard-zone-select').value = zoneName;
+            
+            // Filter GSBH subset for KPIs and Weekly Donut charts
+            const subset = zoneName === 'Tất cả' ? detailData : detailData.filter(gs => gs.vung === zoneName);
+            
+            // Render KPIs and Weekly Donuts for filtered subset
+            renderKPIs(subset);
+            renderCharts(subset);
+        }
+
+        // 4. Filters Configuration for Detail Report
+        function loadFilterOptions() {
+            const filterVung = document.getElementById('filter-vung');
+            const zones = [...new Set(detailData.map(gs => gs.vung))].sort();
+            
+            filterVung.innerHTML = '<option value="">Tất cả các Vùng</option>';
+            zones.forEach(z => {
+                const opt = document.createElement('option');
+                opt.value = z;
+                opt.innerText = z;
+                filterVung.appendChild(opt);
+            });
+        }
+
+        function applyFilters() {
+            const mienVal = document.getElementById('filter-mien').value;
+            const vungVal = document.getElementById('filter-vung').value;
+            const searchVal = document.getElementById('search-gs').value.toLowerCase().trim();
+
+            filteredDetailData = detailData.filter(gs => {
+                const matchMien = !mienVal || gs.mien === mienVal;
+                const matchVung = !vungVal || gs.vung === vungVal;
+                
+                // Normalizing vietnamese characters for search is good, but simple includes is enough
+                const searchString = `${gs.ma_gsbh} ${gs.ten_gsbh}`.toLowerCase();
+                const matchSearch = !searchVal || searchString.includes(searchVal);
+
+                return matchMien && matchVung && matchSearch;
+            });
+
+            // Sort and Render
+            sortDetailData();
+            renderDetailTable();
+        }
+
+        // 5. Render Detail Report Table
+        function renderDetailTable() {
+            const tbody = document.getElementById('detail-table-body');
+            tbody.innerHTML = '';
+
+            filteredDetailData.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.mien}</td>
+                    <td>${row.vung}</td>
+                    <td class="val-num">${row.ma_gsbh}</td>
+                    <td style="font-weight: 500;">${row.ten_gsbh}</td>
+                    <td class="text-center val-num">${row.dang_ky_thang}</td>
+                    <td class="text-center val-num">${row.hoan_thanh_thang}</td>
+                    <td class="text-center val-pct">${(row.pct_dang_ky * 100).toFixed(0)}%</td>
+                    <td class="text-center">
+                        <div class="target-bar-bg" style="width: 50px;">
+                            <div class="target-bar-fill ${row.pct_target >= 1.0 ? 'high' : (row.pct_target >= 0.7 ? 'med' : 'low')}" style="width: ${Math.min(row.pct_target * 100, 100)}%;"></div>
+                        </div>
+                        <span class="val-pct">${(row.pct_target * 100).toFixed(0)}%</span>
+                    </td>
+                    <!-- Tuần 1 -->
+                    <td class="text-center val-num" style="border-left: 1px solid var(--gray-border);">${row.tuan1_dang_ky}</td>
+                    <td class="text-center val-num">${row.tuan1_hoan_thanh}</td>
+                    <td class="text-center val-pct">${(row.tuan1_pct_target * 100).toFixed(0)}%</td>
+                    <td class="text-center" style="border-right: 1px solid var(--gray-border);">
+                        <span class="kpi-badge ${row.tuan1_kpi === 'Đạt' ? 'ok' : 'fail'}">${row.tuan1_kpi}</span>
+                    </td>
+                    <!-- Tuần 2 -->
+                    <td class="text-center val-num">${row.tuan2_dang_ky}</td>
+                    <td class="text-center val-num">${row.tuan2_hoan_thanh}</td>
+                    <td class="text-center val-pct">${(row.tuan2_pct_target * 100).toFixed(0)}%</td>
+                    <td class="text-center" style="border-right: 1px solid var(--gray-border);">
+                        <span class="kpi-badge ${row.tuan2_kpi === 'Đạt' ? 'ok' : 'fail'}">${row.tuan2_kpi}</span>
+                    </td>
+                    <!-- Tuần 3 -->
+                    <td class="text-center val-num">${row.tuan3_dang_ky}</td>
+                    <td class="text-center val-num">${row.tuan3_hoan_thanh}</td>
+                    <td class="text-center val-pct">${(row.tuan3_pct_target * 100).toFixed(0)}%</td>
+                    <td class="text-center" style="border-right: 1px solid var(--gray-border);">
+                        <span class="kpi-badge ${row.tuan3_kpi === 'Đạt' ? 'ok' : 'fail'}">${row.tuan3_kpi}</span>
+                    </td>
+                    <!-- Tuần 4 -->
+                    <td class="text-center val-num">${row.tuan4_dang_ky}</td>
+                    <td class="text-center val-num">${row.tuan4_hoan_thanh}</td>
+                    <td class="text-center val-pct">${(row.tuan4_pct_target * 100).toFixed(0)}%</td>
+                    <td class="text-center">
+                        <span class="kpi-badge ${row.tuan4_kpi === 'Đạt' ? 'ok' : 'fail'}">${row.tuan4_kpi}</span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Sorting Logic
+        function sortTable(column) {
+            if (currentSortCol === column) {
+                currentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSortCol = column;
+                currentSortOrder = 'asc';
+            }
+
+            // Update sorting arrows inside column headers (optional enhancement)
+            sortDetailData();
+            renderDetailTable();
+        }
+
+        function sortDetailData() {
+            filteredDetailData.sort((a, b) => {
+                let valA = a[currentSortCol];
+                let valB = b[currentSortCol];
+
+                // Lowercase string comparison
+                if (typeof valA === 'string') valA = valA.toLowerCase();
+                if (typeof valB === 'string') valB = valB.toLowerCase();
+
+                if (valA < valB) return currentSortOrder === 'asc' ? -1 : 1;
+                if (valA > valB) return currentSortOrder === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+
+        // 6. Filter & Render Raw Data (Tab 3 with pagination)
+        function filterRawData() {
+            const query = document.getElementById('search-raw').value.toLowerCase().trim();
+            filteredRawData = rawData.filter(row => {
+                if (!query) return true;
+                return (
+                    row.mien.toLowerCase().includes(query) ||
+                    row.vung.toLowerCase().includes(query) ||
+                    row.ma_gsbh.toLowerCase().includes(query) ||
+                    row.ten_gsbh.toLowerCase().includes(query) ||
+                    row.trang_thai.toLowerCase().includes(query) ||
+                    row.tu_ngay.includes(query) ||
+                    row.tuan.toLowerCase().includes(query)
+                );
+            });
+
+            rawCurrentPage = 1;
+            renderRawTable();
+        }
+
+        function renderRawTable() {
+            const tbody = document.getElementById('raw-table-body');
+            tbody.innerHTML = '';
+
+            const totalRows = filteredRawData.length;
+            const startIdx = (rawCurrentPage - 1) * rawPageSize;
+            const endIdx = Math.min(startIdx + rawPageSize, totalRows);
+
+            // Render current page items
+            const pageData = filteredRawData.slice(startIdx, endIdx);
+            pageData.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.mien}</td>
+                    <td>${row.vung}</td>
+                    <td class="val-num">${row.ma_gsbh}</td>
+                    <td style="font-weight:500;">${row.ten_gsbh}</td>
+                    <td class="val-num">${row.tu_ngay}</td>
+                    <td>${row.loai_cong_viec}</td>
+                    <td>
+                        <span class="kpi-badge ${row.trang_thai === 'Hoàn Thành' ? 'ok' : (row.trang_thai === 'Đã Duyệt' ? 'med' : 'fail')}" style="${row.trang_thai === 'Đã Duyệt' ? 'background-color:#FEF3C7;color:#D97706;' : ''}">
+                            ${row.trang_thai}
+                        </span>
+                    </td>
+                    <td><span class="kpi-badge" style="background-color:#F1F5F9;color:#475569;">${row.tuan}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Update Pagination info
+            const displayStart = totalRows === 0 ? 0 : startIdx + 1;
+            document.getElementById('pagination-info').innerText = `Hiển thị ${displayStart}-${endIdx} trong tổng số ${totalRows} dòng`;
+
+            // Draw Pagination buttons
+            renderPaginationControls(totalRows);
+        }
+
+        function renderPaginationControls(totalRows) {
+            const container = document.getElementById('pagination-btns-container');
+            container.innerHTML = '';
+
+            const totalPages = Math.ceil(totalRows / rawPageSize);
+            if (totalPages <= 1) return;
+
+            // Previous Button
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'page-btn';
+            prevBtn.innerHTML = '<i class="fa-solid fa-angle-left"></i>';
+            prevBtn.disabled = rawCurrentPage === 1;
+            prevBtn.onclick = () => { rawCurrentPage--; renderRawTable(); };
+            container.appendChild(prevBtn);
+
+            // Page numbers (Limit to max 5 buttons)
+            let startPage = Math.max(1, rawCurrentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+            
+            if (endPage - startPage < 4) {
+                startPage = Math.max(1, endPage - 4);
+            }
+
+            for (let p = startPage; p <= endPage; p++) {
+                const btn = document.createElement('button');
+                btn.className = `page-btn ${p === rawCurrentPage ? 'active' : ''}`;
+                btn.innerText = p;
+                btn.onclick = () => { rawCurrentPage = p; renderRawTable(); };
+                container.appendChild(btn);
+            }
+
+            // Next Button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'page-btn';
+            nextBtn.innerHTML = '<i class="fa-solid fa-angle-right"></i>';
+            nextBtn.disabled = rawCurrentPage === totalPages;
+            nextBtn.onclick = () => { rawCurrentPage++; renderRawTable(); };
+            container.appendChild(nextBtn);
+        }
+    </script>
+</body>
+</html>
