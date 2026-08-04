@@ -13,9 +13,11 @@ try:
 except AttributeError:
     pass
 
-raw_data_dir = r"d:\CJ\11. Adhoc\T8\WW\raw_data"
-js_output = r"d:\CJ\11. Adhoc\T8\WW\coaching_data.js"
-xlsx_output = r"d:\CJ\11. Adhoc\T8\WW\Bao_Cao_Coaching_GSBH.xlsx"
+base_dir = os.path.dirname(os.path.abspath(__file__))
+
+raw_data_dir = os.path.join(base_dir, "raw_data")
+js_output = os.path.join(base_dir, "coaching_data.js")
+xlsx_output = os.path.join(base_dir, "Bao_Cao_Coaching_GSBH.xlsx")
 
 raw_data_abs = os.path.abspath(raw_data_dir)
 js_abs = os.path.abspath(js_output)
@@ -196,7 +198,7 @@ try:
                 df[col] = df[col].astype(str).apply(normalize_text)
             
     # 4. Read master roster from DS SGBH.xlsx
-    master_path = r"d:\CJ\11. Adhoc\T8\WW\DS SGBH.xlsx"
+    master_path = os.path.join(base_dir, "DS SGBH.xlsx")
     master_abs = os.path.abspath(master_path)
     
     print("Đang đọc danh sách GSBH master...")
@@ -448,7 +450,7 @@ try:
     # --- 11. Ghi đè file Excel (để lưu trữ/backup dự phòng) ---
     # Ta vẫn chạy ghi Excel theo format cũ để backup nếu người dùng vẫn cần file Excel
     try:
-        shutil.copy2(xlsx_abs, r"d:\CJ\11. Adhoc\T8\WW\Bao_Cao_Coaching_GSBH_backup.xlsx")
+        shutil.copy2(xlsx_abs, os.path.join(base_dir, "Bao_Cao_Coaching_GSBH_backup.xlsx"))
     except:
         pass
         
