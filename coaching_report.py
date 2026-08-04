@@ -81,12 +81,18 @@ def assign_region(vung):
     return 'Khác'
 
 try:
-    # Scan raw_data folder for files
-    file_pattern_xlsb = os.path.join(raw_data_abs, "*.xlsb")
-    file_pattern_xlsx = os.path.join(raw_data_abs, "*.xlsx")
-    raw_files = glob.glob(file_pattern_xlsb) + glob.glob(file_pattern_xlsx)
-    # Remove files that are open/locked (temporary start with ~$ )
-    raw_files = [f for f in raw_files if not os.path.basename(f).startswith("~$")]
+    # Scan raw_data folder for files (case-insensitive file extension scanning)
+    raw_files = []
+    if os.path.exists(raw_data_abs):
+        for entry in os.listdir(raw_data_abs):
+            full_path = os.path.join(raw_data_abs, entry)
+            if os.path.isfile(full_path) and not entry.startswith("~$"):
+                ext = os.path.splitext(entry)[1].lower()
+                if ext in ['.xlsb', '.xlsx']:
+                    raw_files.append(full_path)
+                    
+    # Sort files to ensure stable read order
+    raw_files = sorted(raw_files)
     
     if len(raw_files) == 0:
         print(f"Error: Không tìm thấy bất kỳ file .xlsb hay .xlsx nào trong thư mục {raw_data_abs}!")
