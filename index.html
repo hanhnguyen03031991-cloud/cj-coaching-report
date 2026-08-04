@@ -961,41 +961,53 @@
                 font-size: 11px !important;
             }
 
-            /* Table Sticky Column adjustments for Mobile: Freeze Column 4 (Tên GSBH) and Hide Column 1, 2, 3 to prevent overlap */
-            #detail-table th:nth-child(1), #detail-table td:nth-child(1),
-            #detail-table th:nth-child(2), #detail-table td:nth-child(2),
-            #detail-table th:nth-child(3), #detail-table td:nth-child(3) {
-                display: none !important;
+            /* Table Sticky Column adjustments for Mobile: Freeze Column 1, 2, 3, 4 (Miền, Vùng, Mã, Tên) */
+            #detail-table th:nth-child(1), #detail-table td:nth-child(1) {
+                position: sticky !important;
+                left: 0px !important;
+                min-width: 55px !important;
+                width: 55px !important;
+                max-width: 55px !important;
+                z-index: 10 !important;
             }
-
+            #detail-table th:nth-child(2), #detail-table td:nth-child(2) {
+                position: sticky !important;
+                left: 55px !important;
+                min-width: 65px !important;
+                width: 65px !important;
+                max-width: 65px !important;
+                z-index: 10 !important;
+            }
+            #detail-table th:nth-child(3), #detail-table td:nth-child(3) {
+                position: sticky !important;
+                left: 120px !important;
+                min-width: 55px !important;
+                width: 55px !important;
+                max-width: 55px !important;
+                z-index: 10 !important;
+            }
             #detail-table th:nth-child(4), #detail-table td:nth-child(4) {
                 position: sticky !important;
-                left: 0 !important;
-                min-width: 90px !important;
-                width: 90px !important;
-                max-width: 90px !important;
+                left: 175px !important;
+                min-width: 85px !important;
+                width: 85px !important;
+                max-width: 85px !important;
                 z-index: 10 !important;
                 box-shadow: inset -2px 0 0 var(--gray-border) !important;
             }
 
-            #detail-table th:nth-child(4) {
+            #detail-table th:nth-child(-n+4) {
                 background-color: var(--gray-light) !important;
                 z-index: 15 !important;
             }
 
-            #detail-table tbody tr:nth-child(odd) td:nth-child(-n+3) {
-                background-color: transparent !important;
-            }
-            #detail-table tbody tr:nth-child(even) td:nth-child(-n+3) {
-                background-color: transparent !important;
-            }
-            #detail-table tbody tr:nth-child(odd) td:nth-child(4) {
+            #detail-table tbody tr:nth-child(odd) td:nth-child(-n+4) {
                 background-color: white !important;
             }
-            #detail-table tbody tr:nth-child(even) td:nth-child(4) {
+            #detail-table tbody tr:nth-child(even) td:nth-child(-n+4) {
                 background-color: #F8FAFC !important;
             }
-            #detail-table tbody tr:hover td:nth-child(4) {
+            #detail-table tbody tr:hover td:nth-child(-n+4) {
                 background-color: #F1F5F9 !important;
             }
 
@@ -1048,41 +1060,53 @@
                 display: none !important;
             }
 
-            /* Raw Table Mobile Adjustments: Freeze Column 4 (Tên GSBH) and Hide Column 1, 2, 3 to prevent overlap */
-            #raw-table th:nth-child(1), #raw-table td:nth-child(1),
-            #raw-table th:nth-child(2), #raw-table td:nth-child(2),
-            #raw-table th:nth-child(3), #raw-table td:nth-child(3) {
-                display: none !important;
+            /* Raw Table Mobile Adjustments: Freeze Column 1, 2, 3, 4 (Miền, Vùng, Mã, Tên) */
+            #raw-table th:nth-child(1), #raw-table td:nth-child(1) {
+                position: sticky !important;
+                left: 0px !important;
+                min-width: 55px !important;
+                width: 55px !important;
+                max-width: 55px !important;
+                z-index: 10 !important;
             }
-
+            #raw-table th:nth-child(2), #raw-table td:nth-child(2) {
+                position: sticky !important;
+                left: 55px !important;
+                min-width: 65px !important;
+                width: 65px !important;
+                max-width: 65px !important;
+                z-index: 10 !important;
+            }
+            #raw-table th:nth-child(3), #raw-table td:nth-child(3) {
+                position: sticky !important;
+                left: 120px !important;
+                min-width: 55px !important;
+                width: 55px !important;
+                max-width: 55px !important;
+                z-index: 10 !important;
+            }
             #raw-table th:nth-child(4), #raw-table td:nth-child(4) {
                 position: sticky !important;
-                left: 0 !important;
-                min-width: 90px !important;
-                width: 90px !important;
-                max-width: 90px !important;
+                left: 175px !important;
+                min-width: 85px !important;
+                width: 85px !important;
+                max-width: 85px !important;
                 z-index: 10 !important;
                 box-shadow: inset -2px 0 0 var(--gray-border) !important;
             }
 
-            #raw-table th:nth-child(4) {
+            #raw-table th:nth-child(-n+4) {
                 background-color: var(--gray-light) !important;
                 z-index: 15 !important;
             }
 
-            #raw-table tbody tr:nth-child(odd) td:nth-child(-n+3) {
-                background-color: transparent !important;
-            }
-            #raw-table tbody tr:nth-child(even) td:nth-child(-n+3) {
-                background-color: transparent !important;
-            }
-            #raw-table tbody tr:nth-child(odd) td:nth-child(4) {
+            #raw-table tbody tr:nth-child(odd) td:nth-child(-n+4) {
                 background-color: white !important;
             }
-            #raw-table tbody tr:nth-child(even) td:nth-child(4) {
+            #raw-table tbody tr:nth-child(even) td:nth-child(-n+4) {
                 background-color: #F8FAFC !important;
             }
-            #raw-table tbody tr:hover td:nth-child(4) {
+            #raw-table tbody tr:hover td:nth-child(-n+4) {
                 background-color: #F1F5F9 !important;
             }
         }
