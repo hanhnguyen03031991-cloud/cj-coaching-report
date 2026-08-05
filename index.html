@@ -1178,6 +1178,24 @@
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-info">
+                        <h3>Chỉ Tiêu (Target) MTD</h3>
+                        <div class="kpi-value" id="kpi-target-mtd">--</div>
+                    </div>
+                    <div class="kpi-icon" style="background-color: #EFF6FF; color: #2563EB;">
+                        <i class="fa-solid fa-calendar-day"></i>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-info">
+                        <h3>Tỷ Lệ Thực Hiện/Target MTD</h3>
+                        <div class="kpi-value" id="kpi-target-mtd-rate">--%</div>
+                    </div>
+                    <div class="kpi-icon" style="background-color: #FDF2F8; color: #DB2777;">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-info">
                         <h3>Chỉ Tiêu (Target) Tháng</h3>
                         <div class="kpi-value" id="kpi-total-target">--</div>
                     </div>
@@ -1187,7 +1205,7 @@
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-info">
-                        <h3>Tỷ Lệ Thực Hiện/Target</h3>
+                        <h3>Tỷ Lệ Thực Hiện/Target Tháng</h3>
                         <div class="kpi-value" id="kpi-target-completion-rate">--%</div>
                     </div>
                     <div class="kpi-icon kpi-2" style="background-color: #ECFDF5; color: #059669;">
@@ -1625,14 +1643,21 @@
             const completionRate = totalReg > 0 ? (totalComp / totalReg * 100).toFixed(1) : 0;
             document.getElementById('kpi-completion-rate').innerText = completionRate + "%";
 
-            // Total Target = GSBH Count * currentTargetDays
-            const currentTargetDays = coachingData.currentTargetDays || 16;
-            const totalTarget = numGsbh * currentTargetDays;
-            document.getElementById('kpi-total-target').innerText = totalTarget + " ngày";
+            // 1. Target Tháng cố định: 16 ngày / GSBH
+            const totalTargetMonth = numGsbh * 16;
+            document.getElementById('kpi-total-target').innerText = totalTargetMonth + " ngày";
 
-            // Target completion rate
-            const targetCompletionRate = totalTarget > 0 ? (totalComp / totalTarget * 100).toFixed(1) : 0;
-            document.getElementById('kpi-target-completion-rate').innerText = targetCompletionRate + "%";
+            // Tỷ lệ thực hiện / Target Tháng
+            const targetMonthRate = totalTargetMonth > 0 ? (totalComp / totalTargetMonth * 100).toFixed(1) : 0;
+            document.getElementById('kpi-target-completion-rate').innerText = targetMonthRate + "%";
+
+            // 2. Target MTD: currentTargetDays ngày / GSBH (lấy từ biến toàn cục currentTargetDays đã được loadMonthData cập nhật)
+            const totalTargetMtd = numGsbh * currentTargetDays;
+            document.getElementById('kpi-target-mtd').innerText = totalTargetMtd + " ngày";
+
+            // Tỷ lệ thực hiện / Target MTD
+            const targetMtdRate = totalTargetMtd > 0 ? (totalComp / totalTargetMtd * 100).toFixed(1) : 0;
+            document.getElementById('kpi-target-mtd-rate').innerText = targetMtdRate + "%";
         }
 
         // 2. Render Summary Table (Hierarchy)
