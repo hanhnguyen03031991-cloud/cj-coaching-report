@@ -1131,7 +1131,7 @@
             <i class="fa-solid fa-users"></i> Báo Cáo Chi Tiết GSBH
         </button>
         <button class="tab-btn" onclick="switchTab('raw-data')">
-            <i class="fa-solid fa-database"></i> Dữ Liệu Thô Đã Lọc
+            <i class="fa-solid fa-database"></i> Dữ Liệu Chi Tiết
         </button>
     </div>
 
@@ -1367,9 +1367,23 @@
         <div id="raw-data" class="tab-content">
             <div class="table-card">
                 <div class="filters-area" style="display: flex; gap: 15px; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;">
-                    <div style="display: flex; gap: 15px; flex-wrap: wrap; flex: 1;">
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap; flex: 1; align-items: flex-end;">
+                        <div class="filter-group" style="min-width: 140px;">
+                            <label>Miền</label>
+                            <select class="filter-control" id="filter-raw-mien" onchange="applyRawFilters()">
+                                <option value="">Tất cả các Miền</option>
+                                <option value="Miền Bắc">Miền Bắc</option>
+                                <option value="Miền Nam">Miền Nam</option>
+                            </select>
+                        </div>
+                        <div class="filter-group" style="min-width: 160px;">
+                            <label>Vùng Bán Hàng</label>
+                            <select class="filter-control" id="filter-raw-vung" onchange="filterRawData()">
+                                <option value="">Tất cả các Vùng</option>
+                            </select>
+                        </div>
                         <div class="filter-group" style="flex: 2; min-width: 250px;">
-                            <label>Tìm kiếm trong dữ liệu thô</label>
+                            <label>Tìm kiếm dữ liệu chi tiết</label>
                             <div class="search-wrapper">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                                 <input type="text" class="search-control" id="search-raw" placeholder="Nhập tên, mã, vùng, trạng thái..." onkeyup="filterRawData()" style="width: 100%;">
@@ -1381,7 +1395,7 @@
                         </div>
                     </div>
                     <button class="page-btn" onclick="exportRawToExcel()" style="display: flex; align-items: center; gap: 6px; border-color: #22C55E; color: #16A34A; padding: 10px 16px; font-size: 13px; border-radius: 6px; height: 38px; cursor: pointer; background: white; font-weight: 600;">
-                        <i class="fa-solid fa-file-excel" style="color: #16A34A;"></i> Xuất Excel Raw Data
+                        <i class="fa-solid fa-file-excel" style="color: #16A34A;"></i> Xuất Excel Dữ Liệu Chi Tiết
                     </button>
                 </div>
                 <div id="raw-double-scroll" style="overflow-x: auto; overflow-y: hidden; border-bottom: 1px solid var(--gray-border); display: none;">
@@ -1397,8 +1411,10 @@
                                 <th>Tên GSBH</th>
                                 <th>Mã NV Thực Hiện</th>
                                 <th>Tên NV Thực Hiện</th>
-                                <th>Từ Ngày (Ngày Thực Hiện)</th>
+                                <th>Từ Ngày</th>
+                                <th>Đến Ngày</th>
                                 <th>Loại Công Việc</th>
+                                <th>Nội dung công việc</th>
                                 <th>Trạng Thái</th>
                                 <th>Phân Tuần</th>
                             </tr>
@@ -1485,8 +1501,17 @@
             rawData = (coachingData.rawData || []).filter(r => r.tu_ngay && r.tu_ngay.substring(0, 7) === monthKey);
             filteredRawData = [...rawData];
 
+            // Reset raw filter selections when switching months
+            if (document.getElementById('filter-raw-mien')) {
+                document.getElementById('filter-raw-mien').value = '';
+            }
+            if (document.getElementById('filter-raw-vung')) {
+                document.getElementById('filter-raw-vung').value = '';
+            }
+
             // Load filters list
             loadFilterOptions();
+            loadRawFilterOptions();
 
             // Update dynamic target headers based on data
             document.getElementById('summary-target-header').innerText = '% Thực Hiện/Target (' + currentTargetDays + ' ngày)';
@@ -1872,6 +1897,32 @@
             });
         }
 
+        function loadRawFilterOptions() {
+            const filterRawVung = document.getElementById('filter-raw-vung');
+            if (!filterRawVung) return;
+            const mienVal = document.getElementById('filter-raw-mien').value;
+            
+            let filteredZones = [];
+            if (mienVal) {
+                filteredZones = [...new Set(rawData.filter(r => r.mien === mienVal).map(r => r.vung))].sort();
+            } else {
+                filteredZones = [...new Set(rawData.map(r => r.vung))].sort();
+            }
+            
+            filterRawVung.innerHTML = '<option value="">Tất cả các Vùng</option>';
+            filteredZones.forEach(z => {
+                const opt = document.createElement('option');
+                opt.value = z;
+                opt.innerText = z;
+                filterRawVung.appendChild(opt);
+            });
+        }
+
+        function applyRawFilters() {
+            loadRawFilterOptions();
+            filterRawData();
+        }
+
         function applyFilters() {
             const mienVal = document.getElementById('filter-mien').value;
             const vungVal = document.getElementById('filter-vung').value;
@@ -1981,13 +2032,17 @@
 
         // 6. Filter & Render Raw Data (Tab 3 with pagination)
         function filterRawData() {
+            const mienVal = document.getElementById('filter-raw-mien').value;
+            const vungVal = document.getElementById('filter-raw-vung').value;
             const query = document.getElementById('search-raw').value.toLowerCase().trim();
             const dateVal = document.getElementById('filter-raw-date').value; // format: YYYY-MM-DD
             
             filteredRawData = rawData.filter(row => {
-                // Filter by date first
+                const matchMien = !mienVal || row.mien === mienVal;
+                const matchVung = !vungVal || row.vung === vungVal;
                 const matchDate = !dateVal || row.tu_ngay === dateVal;
-                if (!matchDate) return false;
+                
+                if (!matchMien || !matchVung || !matchDate) return false;
                 
                 if (!query) return true;
                 return (
@@ -1997,6 +2052,8 @@
                     row.ten_gsbh.toLowerCase().includes(query) ||
                     (row.ma_nv_thuc_hien && row.ma_nv_thuc_hien.toLowerCase().includes(query)) ||
                     (row.ten_nv_thuc_hien && row.ten_nv_thuc_hien.toLowerCase().includes(query)) ||
+                    row.loai_cong_viec.toLowerCase().includes(query) ||
+                    (row.noi_dung_cong_viec && row.noi_dung_cong_viec.toLowerCase().includes(query)) ||
                     row.trang_thai.toLowerCase().includes(query) ||
                     row.tu_ngay.includes(query) ||
                     row.tuan.toLowerCase().includes(query)
@@ -2030,7 +2087,9 @@
                     <td class="val-num">${row.ma_nv_thuc_hien || ''}</td>
                     <td>${row.ten_nv_thuc_hien || ''}</td>
                     <td class="val-num">${row.tu_ngay}</td>
+                    <td class="val-num">${row.den_ngay || ''}</td>
                     <td>${row.loai_cong_viec}</td>
+                    <td>${row.noi_dung_cong_viec || ''}</td>
                     <td>
                         <span class="kpi-badge ${row.trang_thai === 'Hoàn Thành' ? 'ok' : (row.trang_thai === 'Đã Duyệt' ? 'med' : 'fail')}" style="${row.trang_thai === 'Đã Duyệt' ? 'background-color:#FEF3C7;color:#D97706;' : ''}">
                             ${row.trang_thai}
@@ -2367,7 +2426,7 @@
         async function exportRawToExcel() {
             const monthVal = document.getElementById('month-select').value || 'Report';
             const workbook = new ExcelJS.Workbook();
-            const worksheet = workbook.addWorksheet('Filtered_Data');
+            const worksheet = workbook.addWorksheet('Detail_Data');
 
             worksheet.columns = [
                 { header: 'Miền', key: 'mien', width: 12 },
@@ -2376,8 +2435,10 @@
                 { header: 'Tên GSBH', key: 'ten_gsbh', width: 22 },
                 { header: 'Mã NV Thực Hiện', key: 'ma_nv_thuc_hien', width: 16 },
                 { header: 'Tên NV Thực Hiện', key: 'ten_nv_thuc_hien', width: 22 },
-                { header: 'Từ Ngày (Ngày Thực Hiện)', key: 'tu_ngay', width: 22 },
+                { header: 'Từ Ngày', key: 'tu_ngay', width: 15 },
+                { header: 'Đến Ngày', key: 'den_ngay', width: 15 },
                 { header: 'Loại Công Việc', key: 'loai_cong_viec', width: 18 },
+                { header: 'Nội Dung Công Việc', key: 'noi_dung_cong_viec', width: 26 },
                 { header: 'Trạng Thái', key: 'trang_thai', width: 15 },
                 { header: 'Phân Tuần', key: 'tuan', width: 14 }
             ];
@@ -2409,7 +2470,9 @@
                     ma_nv_thuc_hien: r.ma_nv_thuc_hien || '',
                     ten_nv_thuc_hien: r.ten_nv_thuc_hien || '',
                     tu_ngay: r.tu_ngay,
+                    den_ngay: r.den_ngay || '',
                     loai_cong_viec: r.loai_cong_viec,
+                    noi_dung_cong_viec: r.noi_dung_cong_viec || '',
                     trang_thai: r.trang_thai,
                     tuan: r.tuan
                 });
@@ -2424,7 +2487,7 @@
                         right: { style: 'thin', color: { argb: 'FFE2E8F0' } }
                     };
 
-                    if ([1, 2, 4, 6, 8].includes(colNumber)) {
+                    if ([1, 2, 4, 6, 7, 8, 10].includes(colNumber)) {
                         cell.alignment = { vertical: 'middle', horizontal: 'left' };
                     } else {
                         cell.alignment = { vertical: 'middle', horizontal: 'center' };
@@ -2434,7 +2497,7 @@
                         cell.font = { name: 'Arial', size: 9, bold: true, color: { argb: 'FF1E293B' } };
                     }
 
-                    if (colNumber === 9) {
+                    if (colNumber === 11) {
                         const val = cell.value;
                         if (val === 'Hoàn Thành' || val === 'Hoàn thành') {
                             cell.fill = {
@@ -2460,7 +2523,7 @@
                         }
                     }
 
-                    if (colNumber === 10) {
+                    if (colNumber === 12) {
                         cell.fill = {
                             type: 'pattern',
                             pattern: 'solid',
@@ -2475,7 +2538,7 @@
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement('a');
             anchor.href = url;
-            anchor.download = `Bao_Cao_Coaching_RawData_${monthVal}.xlsx`;
+            anchor.download = `Bao_Cao_Chi_Tiet_Data_${monthVal}.xlsx`;
             anchor.click();
             window.URL.revokeObjectURL(url);
         }
